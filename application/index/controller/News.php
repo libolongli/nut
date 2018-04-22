@@ -46,8 +46,8 @@ class News extends Common
         vendor("xg.XingeApp");
       
         //IOS
-        // $xingeIOS=new \XingeApp("2200280420", "11f86da828f2ebf32c6a71136b5ccf61");
-        $xingeIOS=new \XingeApp("2200282613", "d6c667a2f2e1ce1c3c3c5044acd69e7f");
+        $xingeIOS=new \XingeApp("2200280420", "11f86da828f2ebf32c6a71136b5ccf61");
+        // $xingeIOS=new \XingeApp("2200282613", "d6c667a2f2e1ce1c3c3c5044acd69e7f");
         $messageIOS=new \MessageIOS();
         $messageIOS->setAlert($title);
         $messageIOS->setBadge(1);
