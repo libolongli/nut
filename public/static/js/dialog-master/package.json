@@ -1,0 +1,46 @@
+{
+  "name": "amazeui-dialog",
+  "version": "0.0.3",
+  "description": "Amaze UI Modal 模板封装。",
+  "main": "lib/amazeui.dialog.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/amazeui/dialog.git"
+  },
+  "keywords": [
+    "amazeui-plugin",
+    "amaze-ui",
+    "AMUI",
+    "dialog",
+    "jquery-plugin"
+  ],
+  "author": {
+    "name": "along",
+    "email": ""
+  },
+  "bugs": {
+    "url": "https://github.com/amazeui/dialog/issues"
+  },
+  "homepage": "http://amazeui.github.io/dialog",
+  "license": "MIT",
+  "devDependencies": {
+    "amazeui-doc-util": "^0.7.1",
+    "amazeui-gulp-tasks": "latest",
+    "browserify": "^13.0.1",
+    "browserify-shim": "^3.8.12",
+    "gulp": "^3.9.1",
+    "gulp-load-plugins": "^1.2.4",
+    "run-sequence": "^1.2.1"
+  },
+  "dependencies": {
+    "amazeui": "^2.7.0",
+    "jquery": "^2.1.4"
+  },
+  "browserify-shim": {
+    "jquery": "global:jQuery",
+    "amazeui": "global:AMUI"
+  }
+}

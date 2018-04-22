@@ -1,0 +1,18 @@
+.news-title{
+	font-size: 1em;
+	line-height: 1.5em;
+}
+.news-datetime{
+	font-size: 0.85em;
+	line-height: 1.4em;
+	padding: 0 0.5em;
+	text-align: right;
+	color: #CCCCCC;
+}
+.news-content{
+	line-height:1.5em;
+	font-size: 1em;
+}
+.news-service{text-align:center;padding:2em 0;}
+.news-service>button{font-size: 1.2em;}
+img{max-width:100%;}
