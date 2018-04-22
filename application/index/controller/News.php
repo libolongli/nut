@@ -44,8 +44,10 @@ class News extends Common
     
     private function xingePush($id,$type,$title=""){
         vendor("xg.XingeApp");
-        $xingeIOS=new \XingeApp("2200280420", "11f86da828f2ebf32c6a71136b5ccf61");
-        $xinge=new \XingeApp("2100280924", "69ced64bd27442b6d880eb9e659cbece");
+      
+        //IOS
+        // $xingeIOS=new \XingeApp("2200280420", "11f86da828f2ebf32c6a71136b5ccf61");
+        $xingeIOS=new \XingeApp("2200282613", "d6c667a2f2e1ce1c3c3c5044acd69e7f");
         $messageIOS=new \MessageIOS();
         $messageIOS->setAlert($title);
         $messageIOS->setBadge(1);
@@ -54,6 +56,9 @@ class News extends Common
         $messageIOS->setCustom($custom);
         $res=$xingeIOS->PushAllDevices(0, $messageIOS,1);
         $res=$xingeIOS->PushAllDevices(0, $messageIOS,2);
+
+        //安卓
+        $xinge=new \XingeApp("2100280924", "69ced64bd27442b6d880eb9e659cbece");
         $mess = new \Message();
         $mess->setType(\Message::TYPE_NOTIFICATION);
         $mess->setTitle($title);
@@ -64,8 +69,8 @@ class News extends Common
         $style = new \Style(0,1,1,0,0);
         $action = new \ClickAction();
         $action->setActionType(\ClickAction::TYPE_ACTIVITY);
-        // $action->setActivity("com.nuts.im.nutsim.uis.activities.MyWebViewXGActivity");
-        $action->setActivity("com.NUTSTALK.www.activities.MyWebViewXGActivity");
+        $action->setActivity("com.nuts.im.nutsim.uis.activities.MyWebViewXGActivity");
+        // $action->setActivity("com.NUTSTALK.www.activities.MyWebViewXGActivity");
         #打开url需要用户确认
         $action->setComfirmOnUrl(0);
         $mess->setStyle($style);
