@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>充值</title>
+    <meta name="description" content="这是一个 index 页面">
+    <meta name="keywords" content="index">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <link rel="icon" type="image/png" href="__PUBLIC__i/favicon.png">
+    <link rel="apple-touch-icon-precomposed" href="__PUBLIC__i/app-icon72x72@2x.png">
+    <meta name="apple-mobile-web-app-title" content="Amaze UI" />
+    <link rel="stylesheet" href="__PUBLIC__css/amazeui.min.css" />
+    <link rel="stylesheet" href="__PUBLIC__css/amazeui.datatables.min.css" />
+    <link rel="stylesheet" href="__PUBLIC__css/app.css">
+    <script src="__PUBLIC__js/jquery.min.js"></script>
+    <script src="__PUBLIC__js/jquery.form.js"></script>
+    <script src="__PUBLIC__js/layer.js"></script>
+
+</head>
+<style type="text/css">
+    .am-slider .am-slides img{display: inline-block;width: auto;height:600px;}
+    .am-slider .am-slides li{text-align: center}
+    .am-slider-default .am-control-thumbs li img{height:70px;}
+    .am-slider-default .am-control-thumbs{width:;}
+</style>
+<body class="theme-white" style="background: #fff">
+<script src="__PUBLIC__js/theme.js"></script>
+<div class="am-g tpl-g">
+    <!-- 内容区域 -->
+
+<div data-am-widget="slider" class="am-slider am-slider-default" data-am-slider='{}' >
+  <ul class="am-slides">
+  {volist name=":explode(',',$imgs)" id="v"}
+      <li><img src="{$v}"></li>
+       {/volist}
+  </ul>
+</div>
+</div>
+    <script src="__PUBLIC__js/amazeui.min.js"></script>
+    <script src="__PUBLIC__js/amazeui.datatables.min.js"></script>
+    <script src="__PUBLIC__js/dataTables.responsive.min.js"></script>
+    <script src="__PUBLIC__js/app.js"></script>
+</body>
+
+</html>
