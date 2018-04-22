@@ -64,7 +64,8 @@ class News extends Common
         $style = new \Style(0,1,1,0,0);
         $action = new \ClickAction();
         $action->setActionType(\ClickAction::TYPE_ACTIVITY);
-        $action->setActivity("com.nuts.im.nutsim.uis.activities.MyWebViewXGActivity");
+        // $action->setActivity("com.nuts.im.nutsim.uis.activities.MyWebViewXGActivity");
+        $action->setActivity("com.NUTSTALK.www.activities.MyWebViewXGActivity");
         #打开url需要用户确认
         $action->setComfirmOnUrl(0);
         $mess->setStyle($style);
