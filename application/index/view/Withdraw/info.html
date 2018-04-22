@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>提现详情</title>
+    <meta name="description" content="">
+    <meta name="keywords" content="index">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Cache-Control" content="no-cache" />
+    <link rel="icon" type="image/png" href="__PUBLIC__i/favicon.png">
+    <link rel="apple-touch-icon-precomposed" href="__PUBLIC__i/app-icon72x72@2x.png">
+    <meta name="apple-mobile-web-app-title" content="Amaze UI" />
+    <link rel="stylesheet" href="__PUBLIC__css/amazeui.min.css" />
+    <link rel="stylesheet" href="__PUBLIC__css/amazeui.datatables.min.css" />
+    <link rel="stylesheet" href="__PUBLIC__css/app.css">
+</head>
+<style type="text/css">
+    .am-form-group div img{display: inline-block;width: 70px;height:70px;margin-right: 10px;}
+</style>
+<body class="theme-white">
+<!-- 
+ID、用户名、订单号、订单单号、结算银行、代付类型、账户名称、结算银行信息、发起时间、结算金额、到帐金额、手续费、结算状态、失败原因、备注信息、账户余额、详情、 操作(同意/拒絕) 、操作員
+ -->
+    <div class="am-g tpl-g">
+        <!-- 内容区域 -->
+    	<form class="am-form tpl-form-border-form tpl-form-border-br" >
+        	<div class="am-form-group">
+            	<label for="info-id" class="am-u-sm-2 am-form-label">ID：</label>
+            	<div class="am-u-sm-10" id="info-id">{$info.id}</div>
+        	</div>
+            <div class="am-form-group">
+                <label for="info-oname" class="am-u-sm-2 am-form-label">昵称：</label>
+            	<div class="am-u-sm-10" id="info-oname">{$info.oname}</div>
+            </div>
+            <div class="am-form-group">
+                <label for="info-ordersn" class="am-u-sm-2 am-form-label">订单号：</label>
+            	<div class="am-u-sm-10" id="info-ordersn">{$info.ordersn}</div>
+            </div>
+            <div class="am-form-group">
+               <label for="info-bankname" class="am-u-sm-2 am-form-label">结算银行：</label>
+            	<div class="am-u-sm-10" id="info-bankname">{$info.bankName}</div>
+            </div>
+             <div class="am-form-group">
+               <label for="info-cardNo" class="am-u-sm-2 am-form-label">账户：</label>
+            	<div class="am-u-sm-10" id="info-cardNo">{$info.cardNo}</div>
+            </div>
+            <div class="am-form-group">
+               <label for="info-openBankName" class="am-u-sm-2 am-form-label">结算银行信息：</label>
+            	<div class="am-u-sm-10" id="info-openBankName">{$info.openBankName}</div>
+            </div>
+            <div class="am-form-group">
+               <label for="info-amount" class="am-u-sm-2 am-form-label">结算金额：</label>
+            	<div class="am-u-sm-10" id="info-amount">{$info.amount}</div>
+            </div>
+            <div class="am-form-group">
+               <label for="info-recamount" class="am-u-sm-2 am-form-label">到账金额：</label>
+            	<div class="am-u-sm-10" id="info-recamount">{$info.recamount}</div>
+            </div>
+            <div class="am-form-group">
+               <label for="info-tradefee" class="am-u-sm-2 am-form-label">手续费：</label>
+            	<div class="am-u-sm-10" id="info-tradefee">{$info.tradefee}</div>
+            </div>
+            <div class="am-form-group">
+               <label for="info-tradestatus" class="am-u-sm-2 am-form-label">结算状态：</label>
+            	<div class="am-u-sm-10" id="info-tradestatus">
+            	{switch info.tradestatus}
+            	{case 1}<span style="color:##4db14d">已完成</span>{/case}
+            	{case 2}<span style="color:#7B878D">已拒绝</span>{/case}
+            	{default /}审核中
+            	{/switch}
+            	</div>
+            </div>
+            <div class="am-form-group">
+               <label for="info-optlogs" class="am-u-sm-2 am-form-label">失败原因：</label>
+            	<div class="am-u-sm-10" id="info-optlogs">{$info.optlogs}</div>
+            </div>
+            <div class="am-form-group">
+               <label for="info-tradeNote" class="am-u-sm-2 am-form-label">备注信息：</label>
+            	<div class="am-u-sm-10" id="info-tradeNote">{$info.tradeNote}</div>
+            </div>
+        </form>
+    </div>
+</body>
+
+</html>

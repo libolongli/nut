@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>消息中心</title>
+		<link href="https://cdn.bootcss.com/mui/3.7.1/css/mui.min.css" rel="stylesheet">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+		<script src="https://cdn.bootcss.com/mui/3.7.1/js/mui.min.js"></script>
+	</head>
+	<body>
+		<div class="mui-content">
+			<!-- 
+		    <header class="mui-bar mui-bar-nav">
+		        <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		        <h1 class="mui-title">消息中心</h1>
+		    </header>
+		     -->
+		    <div class="mui-content mui-scroll-wrapper" id="newsList">
+		            <div class="mui-scroll">
+		            	<ul class="mui-table-view">
+		            	</ul>
+		            </div>
+		    </div>
+		</div>
+		<script type="text/javascript">
+	mui.init({
+		pullRefresh: {
+			container: "#newsList", //下拉刷新容器标识，querySelector能定位的css选择器均可，比如：id、.class等
+			up: {
+				height: '50px', //可选.默认50.触发上拉加载拖动距离
+				auto: true, //可选,默认false.自动上拉加载一次
+				contentrefresh: "正在加载...", //可选，正在加载状态时，上拉加载控件上显示的标题内容
+				contentnomore: '没有更多数据了', //可选，请求完毕若没有更多数据时显示的提醒内容；
+				callback: pullupRefresh //必选，刷新函数，根据具体业务来编写，比如通过ajax从服务器获取新数据；
+			}
+		}
+	});
+	mui(".mui-table-view").on('tap','.news-info',function(){
+		  //获取id
+		  var id = this.getAttribute("id");
+		  window.location.href="/news/"+id;
+	});
+	var page=0;
+	function pullupRefresh(){
+		page+=1;
+		mui.post('/wap/index/newslists',{
+			page:page
+		},function(res){
+			pushData(res.data,res.last_page);
+		},'json');
+	}
+	function pulldownRefresh(){
+		page=1;
+		mui.post('/wap/index/newslists',{
+			page:page
+		},function(res){
+			pushData(res.data,res.last_page);
+		},'json');
+	}
+	function pushData(data,last_page){
+		setTimeout(function() {
+			mui('#newsList').pullRefresh().endPullupToRefresh((page==last_page||data.length==0));
+			var table = document.body.querySelector('.mui-table-view');
+			var cells = document.body.querySelectorAll('.mui-table-view-cell');
+			for(var i = 0; i < data.length; i++) {
+				var li = document.createElement('li');
+				li.className = 'mui-table-view-cell mui-media';
+				li.setAttribute("id", "news_"+data[i].nid);
+				var html='';
+				html+='        <a href="javascript:void(0);" class="mui-navigate-right news-info" id="'+data[i].nid+'">';
+				//html+=data[i].goods_img==''?'':'            <img class="mui-media-object mui-pull-left" src="'+ data[i].goods_img +'">';
+				html+='            <div class="mui-media-body">';
+				var type=data[i].type==1?"【公告】":"【新闻】";
+				html+='               '+type + data[i].title +
+		'                <p class="mui-ellipsis" style=" margin-top:5px;">'+ data[i].content +'</p>' +
+		'            </div>' +
+		'        </a>' +
+		'';
+				li.innerHTML = html;
+				table.appendChild(li);
+				}
+		}, 1500);
+	}
+</script>
+	</body>
+</html>

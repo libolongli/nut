@@ -1,0 +1,30 @@
+{extend name="layout" /}
+{block name="title"}{$info.title}{/block}
+{block name="content"}
+<div class="mui-scroll-wrapper">
+				<div class="mui-scroll" style="color: black; background-color: white; padding: 0.5em;">
+					<h1 class="news-title">{$info.title}</h1>
+					<h5 class="news-datetime">{$info.createTime}</h5>
+					<div class="news-content">{$info.content}</div>
+					<div class="news-service"><button type="button" id="callService" class="mui-btn mui-btn-warning">联系客服</button></div>
+				</div>
+</div>
+{/block}
+{block name="script"}
+<script type="text/javascript">
+mui('.mui-scroll-wrapper').scroll({
+	deceleration: 0.0005 //flick 减速系数，系数越大，滚动速度越慢，滚动距离越小，默认值0.0006
+});
+mui('.news-service').on('tap','button',function(){
+	try{
+   	 	window.webkit.messageHandlers.callService.postMessage("");
+	}catch(err){
+   		try{
+     			window.samnuts.callService(JSON.stringify(""));
+   		}catch(e){
+       		console.log("正在发送请求...");
+   		}
+	}
+});
+</script>
+{/block}

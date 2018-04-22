@@ -1,0 +1,112 @@
+{include file="Widget/header" /} 
+        <!-- 侧边导航栏 -->
+        {:widget('Widget/menu')}
+
+        <!-- 内容区域 -->
+        <div class="tpl-content-wrapper">
+            <div class="row-content am-cf">
+                <div class="row">
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                        <div class="widget am-cf">
+                            <div class="widget-head am-cf">
+                                <div class="widget-title  am-cf">管理员列表</div>
+                            </div>
+                            <div class="widget-body  am-fr">
+
+                                <div class="am-u-sm-12 am-u-md-6 am-u-lg-6">
+                                    <div class="am-form-group">
+                                        <div class="am-btn-toolbar">
+                                            <div class="am-btn-group am-btn-group-xs">
+                                                <a href="{:url('Admin/AdminAdd')}" class="am-btn am-btn-default am-btn-success"><span class="am-icon-plus"></span> 新增</a>
+                                                <!-- <a href="" class="am-btn am-btn-default am-btn-danger"><span class="am-icon-trash-o"></span> 删除</a>
+ -->                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="am-u-sm-12 am-u-md-12 am-u-lg-3">
+                                <form action="" method="post">
+                                    <div class="am-input-group am-input-group-sm tpl-form-border-form cl-p">
+                                        <input type="text" class="am-form-field " name="name" value="{$name}" placeholder="管理员名称">
+                                        <span class="am-input-group-btn">
+							            <button class="am-btn  am-btn-default am-btn-success tpl-table-list-field am-icon-search" type="submit"></button>
+							          </span>
+                                    </div>
+                                </form>
+                                </div>
+
+                                <div class="am-u-sm-12">
+                                    <table width="100%" class="am-table am-table-compact am-table-striped tpl-table-black " id="example-r">
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>姓名</th>
+                                                <th>邮箱</th>
+                                                <th>电话</th>
+                                                <th>最近登录IP</th>
+                                                <th>最近登录时间</th>
+                                                <th>状态</th>
+                                                <th>角色</th>
+                                                <th>操作</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tbody">
+                                        {volist name="data" id="d"}
+                                            <tr class="gradeX" id="tr{$d.id}">
+                                                <td>{$d.id}</td>
+                                                <td>{$d.username}</td>
+                                                <td>{$d.email}</td>
+                                                <td>{$d.mobile}</td>
+                                                <td>{$d.last_login_ip}</td>
+                                                <td>{$d.last_login_time}</td>
+                                                <td>{if condition="$d.status eq 0"}<span style="color: red">禁用</span>{else /} <span style="color: #5eb95e">可用</span> {/if}</td>
+                                                <td>{$d.role}</td>
+                                                <td>
+                                                    <div class="tpl-table-black-operation" data-id="{$d.id}">
+                                                        {if condition="$d.roleid neq 1"}<a href="{:url('Admin/AdminEdit')}?id={$d.id}"><i class="am-icon-pencil"></i> 编辑</a>
+                                                        <a href="javascript:void(0);"  onclick="Admindelete(this)" class="tpl-table-black-operation-del"><i class="am-icon-trash"></i> 删除</a>{/if}
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        {/volist}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="am-u-lg-12 am-cf"><div class="am-fr">{$data->render()}</div></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript">
+    function Admindelete(obj){
+    	var id=$(obj).parent('div').data('id');
+    	var onConfirm = function() {
+    		$.post("{:url('Admin/AdminDelete')}",{id:id},function(data){;
+            if(!data.code||typeof(data.code)=='undefined'){
+                if(typeof(data.msg)!='undefined')layer.msg(data.msg,{icon:2,time:1000});return;
+                layer.msg(data.msg,{time:1000});return;
+            }else{
+                layer.msg(data.msg,{time:1000});
+                $('#tr'+id).remove();
+            }
+        },'json');
+          };
+          var onCancel=function() { }
+          var $confirm = $('#my-confirm');
+          var confirm = $confirm.data('amui.modal');
+          if (confirm) {
+              confirm.options.onConfirm =  onConfirm;
+              confirm.options.onCancel =  onCancel;
+              confirm.toggle(this);
+            } else {
+              $confirm.modal({
+                relatedElement: this,
+                onConfirm: onConfirm,
+                onCancel: onCancel
+              });
+            }
+    }
+        
+    </script>
+    {include file="Widget/footer" /} 

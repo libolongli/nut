@@ -1,0 +1,118 @@
+{include file="Widget/header" /} 
+        <!-- 侧边导航栏 -->
+        {:widget('Widget/menu')}
+
+        <style type="text/css">
+            label {font-weight: 100;font-size: 12px; }
+            input[type=checkbox]{vertical-align: middle;margin: 0}
+            .am-u-sm-10{padding-top: 5px;}
+        </style>
+        <!-- 内容区域 -->
+        <div class="tpl-content-wrapper">
+            <div class="row-content am-cf">
+                <div class="row">
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                        <div class="widget am-cf">
+                            <div class="widget-head am-cf">
+                                <div class="widget-title am-fl">编辑角色权限</div>
+                                <div class="widget-function am-fr">
+                                <a href="JavaScript:history.back(-1)">返回</a>
+                                </div>
+                            </div>
+                            <div class="widget-body am-fr">
+                                <form class="am-form tpl-form-border-form" id="add-form" method="post" action="{:url('Admin/privs')}">
+                                    <div class="am-form-group">
+                                        <label for="name" class="am-u-sm-2 am-form-label">角色名称</label>
+                                        <div class="am-u-sm-10">{$data.name}</div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <label for="status" class="am-u-sm-2 am-form-label">权限设置</label>
+                                        <div class="am-u-sm-10">
+                                         <div>
+                                          {volist name="menus" id="m"}
+										   <dl class="permission-list">
+											<dt>
+											 <label>
+											  <input type="checkbox" name="menu[]" {if condition="in_array($m.id,$privs)"}checked{/if} value="{$m.id}" id="user-Character-0">{$m.name}
+											 </label>
+											</dt>
+											{volist name="m.child" id="c"}
+											<dd style="margin-left: 15px;">
+											 <dl class="cl permission-list2">
+											  <dt>
+											   <label class="">
+											    <input type="checkbox" name="menu[]" {if condition="in_array($c.id,$privs)"}checked{/if} value="{$c.id}" id="user-Character-0-0">{$c.name}
+											   </label>
+											  </dt>
+											  {volist name="c.childs" id="s"}
+											  <dd style="margin-left: 25px;">
+											   <label class="">
+												 <input type="checkbox" name="menu[]" {if condition="in_array($s.id,$privs)"}checked{/if} value="{$s.id}" id="user-Character-0-0-0">{$s.name}
+											   </label>
+											  </dd>
+											  {/volist}
+											 </dl>
+											</dd>
+											{/volist}
+										   </dl>
+										   {/volist}
+                                          </div>
+                                        </div>
+                                    </div>
+                                    <input name="id" value="{$data.id}" type="hidden">
+                                    <div class="am-form-group">
+                                        <div class="am-u-sm-10 am-u-sm-push-3">
+                                            <button type="submit" class="am-btn am-btn-primary tpl-btn-bg-color-success ">提交</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <script type="text/javascript">
+        $(function(){
+        	$(".permission-list dt input:checkbox").click(function(){
+		$(this).closest("dl").find("dd input:checkbox").prop("checked",$(this).prop("checked"));
+	});
+	$(".permission-list2 dd input:checkbox").click(function(){
+		var l =$(this).parent().parent().find("input:checked").length;
+		var l2=$(this).parents(".permission-list").find(".permission-list2 dd").find("input:checked").length;
+		if($(this).prop("checked")){
+			$(this).closest("dl").find("dt input:checkbox").prop("checked",true);
+			$(this).parents(".permission-list").find("dt").first().find("input:checkbox").prop("checked",true);
+		}
+		else{
+			if(l==0){
+				$(this).closest("dl").find("dt input:checkbox").prop("checked",false);
+			}
+			if(l2==0){
+				$(this).parents(".permission-list").find("dt").first().find("input:checkbox").prop("checked",false);
+			}
+		}
+	});
+            $("#add-form").validate({
+                onkeyup:false,
+                focusCleanup:true,
+                success:"valid",
+                submitHandler:function(form){
+                    $(form).ajaxSubmit({
+                        type:'post',
+                        dateType:'json',
+                        success:function(data){
+                            if(!data.code||typeof(data.code)=='undefined'){
+                                if(typeof(data.msg)!='undefined')layer.msg(data.msg,{icon:2,time:1000});return;
+                                layer.msg(data.msg,{time:1000});return;
+                            }else{
+                                layer.msg(data.msg,{time:1000});
+                                window.location.href = "{:url('Admin/roleList')}";
+                            }
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+{include file="Widget/footer" /} 

@@ -1,0 +1,102 @@
+{include file="Widget/header" /} 
+        <!-- 侧边导航栏 -->
+        {:widget('Widget/menu')}
+
+        <!-- 内容区域 -->
+        <div class="tpl-content-wrapper">
+            <div class="row-content am-cf">
+                <div class="row">
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                        <div class="widget am-cf">
+                            <div class="widget-head am-cf">
+                                <div class="widget-title  am-cf">手工充值记录表</div>
+                            </div>
+                            <div class="widget-body  am-fr">
+
+                                <div class="am-u-sm-12 am-u-md-12">
+                                <form action="" class="am-form am-form-inline" role="form" method="post">
+                                    <div class="am-input-group am-input-group-sm tpl-form-border-form cl-p">
+                                    <input type="text" class="am-form-field " name="id" value="{$search['id']}" placeholder="ID">
+                                    </div>
+ 	 								<div class="am-form-group am-input-group-sm tpl-form-border-form cl-p">
+                                    <input type="text" class="am-form-field "  data-am-datepicker readonly name="ctime" value="{$search['ctime']}" placeholder="时间">
+                                    </div>
+								    <div class="am-form-group am-input-group-sm tpl-form-border-form cl-p">
+                                    <select data-am-selected  name="moneyDirect" class="am-form-field">
+  											<option value="0">交易形式</option>
+  											<option {if $search.moneyDirect eq 1}selected{/if} value="1">增加</option>
+  											<option {if $search.moneyDirect eq -1}selected{/if} value="-1">减少</option>
+										</select>
+								    </div>
+ 	 								<div class="am-form-group am-input-group-sm tpl-form-border-form cl-p">
+                                        <input type="text" class="am-form-field " style="width:300px;" name="nickname" value="{$search['nickname']}" placeholder="用户名">
+                                    </div>
+ 	 								<div class="am-form-group am-input-group-sm tpl-form-border-form cl-p">
+                                        <button class="am-btn  am-btn-default am-btn-success tpl-table-list-field am-icon-search" type="submit"></button>
+                                    </div>
+                                    <div class="am-form-group am-input-group-sm tpl-form-border-form cl-p">
+                                        <span style="color:red;font-weight:bolder;">合计：&yen; {$total|sprintf='%.2f',###}</span>
+                                    </div>
+                                </form>
+                                </div>
+	<!-- 交易时间、交易方式（红包/转账/付款）、交易形式（支出/收入）交易状态、余额 -->
+                                <div class="am-u-sm-12">
+                                    <table width="100%" class="am-table am-table-compact am-table-striped tpl-table-black " id="example-r">
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>用户名</th>
+                                                <th>姓名</th>
+                                                <th>交易金额</th>
+                                                <th>交易方式</th>
+                                                <th>交易状态</th>
+                                                <th>交易时间</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        {volist name="data" id="d"}
+                                            <tr class="gradeX" id="tr{$d.id}">
+                                                <td>{$d.id}</td>
+                                                <td>{$d.nickname}</td>
+                                                <td>{$d.realname}</td>
+                                                <td>{$d.amount}</td>
+                                                <td>{if condition="$d.moneyDirect eq -1"}减少{else /}增加{/if}</td>
+                                                <td>成功</td>
+                                                <td>{:transformTime($d.occurTime)}</td>
+                                                <td>
+                                                </td>
+                                            </tr>
+                                        {/volist}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="am-u-lg-12 am-cf"><div class="am-fr">{$data->render()}</div></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript">
+    function walletdelete(id){
+        $('#my-confirm').modal({
+            relatedTarget: this,
+            onConfirm: function(options) {
+                $.post("{:url('user/delwallet')}",{id:id},function(data){;
+                    if(!data.code||typeof(data.code)=='undefined'){
+                        if(typeof(data.msg)!='undefined')layer.msg(data.msg,{icon:2,time:1000});return;
+                        layer.msg(data.msg,{time:1000});return;
+                    }else{
+                        layer.msg(data.msg,{time:1000});
+                        //$('#tr'+id).remove();
+                        location.reload();
+                    }
+                },'json');
+            },
+            onCancel: function() { }
+        });
+    }
+        
+    </script>
+    {include file="Widget/footer" /} 

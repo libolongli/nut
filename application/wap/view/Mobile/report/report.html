@@ -1,0 +1,49 @@
+{include file='mobile/public/header' /}
+<body>
+  <div data-am-widget="list_news" class="am-list-news am-list-news-default" >
+  <!--列表标题-->
+    <div class="am-list-news-hd am-cf" id="report-title">
+          <h2>{:lang('您为什么要举报该帐号？')}</h2>
+     </div>
+
+  <div class="am-list-news-bd" id="report-list">
+  {if $list}
+  <ul class="am-list">
+  	  {volist name="list" id="vo"}
+  	  <li class="am-g am-list-item-dated yh-list-item">
+          <a href="{if $vo.child}javascript:push({$vo.id},'{$vo.keywords}');{else /}{:config('app.schemes')}:{$act}{/if}" class="am-list-item-hd ">{$vo.title}</a>
+
+          <span class="am-list-date"><i class="am-icon-chevron-right"></i></span>
+      </li>
+  	  {/volist}
+  </ul>
+  {/if}
+  </div>
+
+    </div>
+    <script type="text/javascript">
+    var type="{$type}";
+    var lang="{$lang}";
+    function push(id,title){
+    	$.post('/wap/getReport',{pid:id,type:type,lang:lang},function(response){
+    		var html='';
+    		if(response.code==1){
+    			html='<ul class="am-list">';
+    			$.each(response.data,function(k,v){
+    				html+='<li class="am-g am-list-item-dated yh-list-item">';
+    				html+='<a href="';
+    				var str="{:config('app.schemes')}:{$act}";
+    				if(v.child.length>0)str='javascript:push('+v.id+',\''+v.keywords+'\');';
+    				html+=str+'" class="am-list-item-hd ">'+v.title+'</a>';
+    				html+='<span class="am-list-date"><i class="am-icon-chevron-right"></i></span>';
+    				html+='</li>';
+    			});
+    			html+='</ul>';
+    		}
+    		$("#report-title h2:first").html(title);
+    		$("#report-list").html(html);
+    	},'json');
+    }
+    </script>
+</body>
+</html>

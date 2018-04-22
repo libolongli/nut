@@ -1,0 +1,77 @@
+{include file="Widget/header" /} 
+        <!-- 侧边导航栏 -->
+        {:widget('Widget/menu')}
+
+        <!-- 内容区域 -->
+        <style type="text/css">
+            .theme-white .tpl-form-border-form input[type=text],.theme-black .tpl-form-border-form input[type=text],.theme-white .am-form-field{display: inline-block;width: 150px;margin-right: 10px;float: right}
+			.gradeX td a{color:#4aaa4a;}
+        </style>
+        <div class="tpl-content-wrapper">
+            <div class="row-content am-cf">
+                <div class="row">
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                        <div class="widget am-cf">
+                            <div class="widget-head am-cf">
+                                <div class="widget-title  am-cf">财务风险异常列表</div>
+                            </div>
+                            <div class="widget-body  am-fr">
+
+                                 <div class="am-u-sm-12 am-u-md-12">
+                                <form action="" class="am-form am-form-inline" role="form" method="post">
+                                    <div class="am-input-group am-input-group-sm tpl-form-border-form cl-p">
+                                    <input type="text" class="am-form-field " name="id" value="{$search['id']}" placeholder="ID">
+                                    </div>
+ 	 								<div class="am-form-group am-input-group-sm tpl-form-border-form cl-p">
+                                    <input type="text" class="am-form-field "  data-am-datepicker readonly name="ctime" value="{$search['ctime']}" placeholder="时间">
+                                    </div>
+ 	 								<div class="am-form-group am-input-group-sm tpl-form-border-form cl-p">
+                                        <input type="number" class="am-form-field " name="amount" value="{$search['amount']}" placeholder="金额">
+                                        </div>
+ 	 								<div class="am-form-group am-input-group-sm tpl-form-border-form cl-p">
+                                        <button class="am-btn  am-btn-default am-btn-success tpl-table-list-field am-icon-search" type="submit"></button>
+                                    </div>
+                                </form>
+                                </div>
+                                <div class="am-u-sm-12">
+                                    <table width="100%" class="am-table am-table-compact am-table-striped tpl-table-black " id="example-r">
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>用户名</th>
+                                                <th>金额</th>
+                                                <th>类型</th>
+                                                <th>时间</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        {volist name="data" id="d"}
+                                            <tr class="gradeX" id="tr{$d.id}">
+                                                <td>{$d.id}</td>
+                                                <td><a href="javascript:layer.open({type: 2,title:'用户信息',area: ['500px', '440px'],shadeClose: true,fixed: false,maxmin: true,content: '/index/user/userInfo?id={$d.userId}'});">{$d.oname}</a></td>
+                                                <td>{$d.amount}</td>
+                                                <td>
+                                                {switch d.type}
+                                                	{case 1}<span style="color:#F0FF12">超日限</span>{/case}
+													{case 1}<span style="color:#FAC605">超月限</span>{/case}
+    												{case 2}<span style="color:#FF0000">超年限</span>{/case}
+    												{default /}未知类型
+												{/switch}
+												</td>
+                                                <td>{$d.createTime}</td>
+                                            </tr>
+                                        {/volist}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="am-u-lg-12 am-cf"><div class="am-fr">{$data->render()}</div></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <script type="text/javascript">
+        
+    </script>
+    {include file="Widget/footer" /} 

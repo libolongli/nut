@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>充值</title>
+    <meta name="description" content="这是一个 index 页面">
+    <meta name="keywords" content="index">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <link rel="icon" type="image/png" href="__PUBLIC__i/favicon.png">
+    <link rel="apple-touch-icon-precomposed" href="__PUBLIC__i/app-icon72x72@2x.png">
+    <meta name="apple-mobile-web-app-title" content="Amaze UI" />
+    <link rel="stylesheet" href="__PUBLIC__css/amazeui.min.css" />
+    <link rel="stylesheet" href="__PUBLIC__css/amazeui.datatables.min.css" />
+    <link rel="stylesheet" href="__PUBLIC__css/app.css">
+</head>
+<style type="text/css">
+    .am-form-group div img{display: inline-block;width: 70px;height:70px;margin-right: 10px;}
+</style>
+<body class="theme-white">
+
+    <div class="am-g tpl-g">
+        <!-- 内容区域 -->
+    	<form class="am-form tpl-form-border-form tpl-form-border-br" >
+        	<div class="am-form-group">
+            	<label for="user-name" class="am-u-sm-2 am-form-label"></label>
+            	<div class="am-u-sm-10"><img src="{$member.headUrl}">{$member.name}</div>
+        	</div>
+            <div class="am-form-group">
+                <label for="user-name" class="am-u-sm-2 am-form-label"></label>
+                <div class="am-u-sm-10">电话：{$member.mobile}</div>
+            </div>
+            <div class="am-form-group">
+                <label for="user-name" class="am-u-sm-2 am-form-label"></label>
+                <div class="am-u-sm-10">邮箱：{$member.mail}</div>
+            </div>
+            <div class="am-form-group">
+                <label for="user-name" class="am-u-sm-2 am-form-label"></label>
+                <div class="am-u-sm-10">性别：{if condition="$member.sex eq 0"}女{else /}男{/if}</div>
+            </div>
+        </form>
+    </div>
+</body>
+
+</html>

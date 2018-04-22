@@ -1,0 +1,123 @@
+{include file="Widget/header" /} 
+        <!-- 侧边导航栏 -->
+        {:widget('Widget/menu')}
+
+        <!-- 内容区域 -->
+        <div class="tpl-content-wrapper">
+            <div class="row-content am-cf">
+                <div class="row">
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                        <div class="widget am-cf">
+                            <div class="widget-head am-cf">
+                                <div class="widget-title  am-cf">群组列表</div>
+                            </div>
+                            <div class="widget-body  am-fr">
+                            	<div class="am-u-sm-2 am-u-md-2 am-u-lg-1">
+                                    <div class="am-form-group">
+                                        <div class="am-btn-toolbar">
+                                            <div class="am-btn-group am-btn-group-xs">
+                                                <a href="__URL__/configs" class="am-btn am-btn-default am-btn-success"><span class="am-icon-setting"></span> 级别设置</a>                                          
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="am-u-sm-10 am-u-md-10 am-u-lg-11">
+                                <form action="" class="am-form am-form-inline" role="form" method="post">
+ 	 								<div class="am-form-group am-input-group-sm tpl-form-border-form cl-p">
+    									<input type="number" name="id" value="{$ser['id']}" class="am-form-field" placeholder="ID">
+ 	 								</div>
+ 	 								<div class="am-form-group am-input-group-sm tpl-form-border-form cl-p">
+    									<input type="text" name="name" value="{$ser['name']}" class="am-form-field" placeholder="群名称">
+ 	 								</div>
+ 	 								<div class="am-form-group">
+    									<button type="submit" class="am-btn  am-btn-default am-btn-success tpl-table-list-field am-icon-search"></button>
+ 	 								</div>
+                                </form>
+                                </div>
+                                <hr>
+                                <div class="am-u-sm-12">
+                                    <table width="100%" class="am-table am-table-compact am-table-striped tpl-table-black " id="example-r">
+                                        <thead>
+                                            <tr>
+                                                <th width=100>ID</th>
+                                                <th width=120>名称</th>
+                                                <th width=150>建群时间</th>
+                                                <th>群主</th>
+                                                <th width=200>操作</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        {volist name="data" id="d"}
+                                            <tr class="gradeX" id="tr{$d.id}">
+                                                <td>{$d.id}</td>
+                                                <td>{$d.name}</td>
+                                                <td>{$d.createTime|substr=###,0,10|date='Y-m-d H:i:s',###}</td>
+                                                <td><p style="margin:0;"><span style="display:inline-block;width:4em;">用户名：</span>{$d.oname}</p><p style="margin:0;"><span style="display:inline-block;width:4em;">ID：</span>{$d.oid}</p><p style="margin:0;"><span style="display:inline-block;width:4em;">手机号：</span>{$d.ophone}</p></td>
+                                                <td>
+                                                    <div class="tpl-table-black-operation">
+                                                    <a href="javascript:dissGroup({$d.id});"> 解散</a>
+                                                    	<a href="javascript:frozenGroup({$d.id},{if $d.status==0}1{else}0{/if});"> {if $d.status==1}解冻{else}冻结{/if}</a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        {/volist}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="am-u-lg-12 am-cf"><div class="am-fr">{$data->render()}</div></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript">
+        function frozenGroup(id,sta){
+        	var str=sta==1?"冻结":"解冻";
+        	layer.confirm("您确定要"+str+"该群组吗？", {icon: 3, title:'操作提示'},function(index){
+        		layer.load(1);
+        		try{
+        			$.post("__URL__/updateFrozen",{gid:id,sta:sta},function(res){
+            			layer.closeAll('loading');
+            			layer.close(index);
+            			layer.msg(res.msg);
+            			if(res.code==1){
+            				window.location.reload();
+            			}else{
+            				return false;
+            			}
+            		},'json');
+        		}catch(err){
+        			layer.closeAll('loading');
+        			layer.close(index);
+        			layer.msg("请求失败");
+        			return false;
+        		}
+        		
+        	});
+        }
+        function dissGroup(id){
+        	layer.confirm("您确定要解散该群组吗？", {icon: 3, title:'操作提示'},function(index){
+        		layer.load(1);
+        		try{
+        			$.post("__URL__/dissGroup",{gid:id},function(res){
+            			layer.closeAll('loading');
+            			layer.close(index);
+            			layer.msg(res.msg);
+            			if(res.code==1){
+            				window.location.reload();
+            			}else{
+            				return false;
+            			}
+            		},'json');
+        		}catch(err){
+        			layer.closeAll('loading');
+        			layer.close(index);
+        			layer.msg("请求失败");
+        			return false;
+        		}
+        		
+        	});
+        }
+    	</script>
+    {include file="Widget/footer" /} 

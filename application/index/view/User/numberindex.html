@@ -1,0 +1,129 @@
+{include file="Widget/header" /}
+        <!-- 侧边导航栏 -->
+        {:widget('Widget/menu')}
+
+        <!-- 内容区域 -->
+        <div class="tpl-content-wrapper">
+            <div class="row-content am-cf">
+                <div class="row">
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                        <div class="widget am-cf">
+                            {if condition="$item eq 'rule'"}
+                            <div class="widget-head am-cf">
+                                <div class="widget-title am-fl">添加靓号</div>
+                                <div class="widget-function am-fr">
+                                <a href="{:url('User/numberIndex')}"><<返回</a>
+                                </div>
+                            </div>
+                            <div class="widget-body  am-fr">
+                                
+                                <div class="am-u-sm-12">
+                                    <table width="100%" class="am-table am-table-compact am-table-striped tpl-table-black " id="example-r">
+                                        <thead>
+                                            <tr>
+                                                <th>编号</th>
+                                                <th>规则</th>
+                                                <th>操作</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        {volist name="data" id="d"}
+                                            <tr class="gradeX" id="tr{$d.id}">
+                                                <td>{$d.id}</td>
+                                                <td>{$d.type}</td>
+                                                <td>
+                                                    <div class="tpl-table-black-operation">
+                                                       <a href="javascript:layer.open({type: 2,title:'编辑',area: ['300px', '200px'],shadeClose: true,fixed: false,maxmin: true,content: 'numberTypeEdit?id={$d.id}'});" class="tpl-table-black-operation-list"><i class="am-icon-pencil"></i> 编辑</a>
+                                                       <a href="javascript:numberTypeDelete({$d.id});" class="tpl-table-black-operation-del"><i class="am-icon-trash"></i> 删除</a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        {/volist}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            {else /}
+                            <div class="widget-head am-cf">
+                                <div class="widget-title  am-cf">靓号列表</div>
+                            </div>
+                            <div class="widget-body  am-fr">
+                                <div class="am-u-sm-12 am-u-md-6 am-u-lg-6">
+                                    <div class="am-form-group">
+                                        <div class="am-btn-toolbar">
+                                            <div class="am-btn-group am-btn-group-xs">
+                                                <a href="{:url('User/numberAdd')}" class="am-btn am-btn-default am-btn-success"><span class="am-icon-plus"></span> 新增</a>
+                                                <a href="{:url('User/numberIndex')}?item=rule" class="am-btn am-btn-default am-btn-danger"><span class="am-icon-bars"></span> 规则</a>
+                                           </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="am-u-sm-12 am-u-md-12 am-u-lg-3">
+                                    <form action="" method="post">
+                                        <div class="am-input-group am-input-group-sm tpl-form-border-form cl-p">
+                                            <input type="text" class="am-form-field " name="number" value="{$ser['number']}" placeholder="靓号">
+                                            <span class="am-input-group-btn">
+    							            <button class="am-btn  am-btn-default am-btn-success tpl-table-list-field am-icon-search" type="submit"></button>
+    							          </span>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="am-u-sm-12">
+                                    <table width="100%" class="am-table am-table-compact am-table-striped tpl-table-black " id="example-r">
+                                        <thead>
+                                            <tr>
+                                                <th>靓号</th>
+                                                <th>状态</th>
+                                                <th>绑定用户</th>
+                                                <th>操作</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        {volist name="data" id="d"}
+                                            <tr class="gradeX" id="tr{$d.id}">
+                                                <td>{$d.number}</td>
+                                                <td>{if condition="$d.used eq 1"}已使用{else /}-{/if}</td>
+                                                <td>{$d.nickName}</td>
+                                                <td>
+                                                    <div class="tpl-table-black-operation">
+                                                       {if condition="$d.used eq 1"}
+                                                       {else /}
+                                                       <a href="javascript:layer.open({type: 2,title:'充值',area: ['500px', '440px'],shadeClose: true,fixed: false,maxmin: true,content: 'userpay?id={$d.id}'});" class="tpl-table-black-operation-list"><i class="am-icon-money"></i> 绑定用户</a>
+                                                       <a href="javascript:userdelete({$d.id});" class="tpl-table-black-operation-del"><i class="am-icon-trash"></i> 设为无效</a>
+                                                       {/if}
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        {/volist}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="am-u-lg-12 am-cf"><div class="am-fr">{$data->render()}</div></div>
+                                {/if}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript">
+    function numberTypeDelete(id){
+        $('#my-confirm').modal({
+            relatedTarget: this,
+            onConfirm: function(options) {
+                $.post("{:url('User/numberTypeDelete')}",{id:id},function(data){;
+                    if(!data.code||typeof(data.code)=='undefined'){
+                        if(typeof(data.msg)!='undefined')layer.msg(data.msg,{icon:2,time:1000});return;
+                        layer.msg(data.msg,{time:1000});return;
+                    }else{
+                        layer.msg(data.msg,{time:1000});
+                        location.reload();
+                        //$('#tr'+id).remove();
+                    }
+                },'json');
+            },
+            onCancel: function() { }
+        });
+    }
+
+    </script>
+    {include file="Widget/footer" /}

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>投诉详情</title>
+    <meta name="description" content="">
+    <meta name="keywords" content="index">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Cache-Control" content="no-cache" />
+    <link rel="icon" type="image/png" href="__PUBLIC__i/favicon.png">
+    <link rel="apple-touch-icon-precomposed" href="__PUBLIC__i/app-icon72x72@2x.png">
+    <meta name="apple-mobile-web-app-title" content="Amaze UI" />
+    <link rel="stylesheet" href="__PUBLIC__css/amazeui.min.css" />
+    <link rel="stylesheet" href="__PUBLIC__css/amazeui.datatables.min.css" />
+    <link rel="stylesheet" href="__PUBLIC__css/app.css">
+</head>
+<style type="text/css">
+    .am-form-group div img{display: inline-block;width: 70px;height:70px;margin-right: 10px;}
+</style>
+<body class="theme-white">
+<!-- 
+ID、用户名、订单号、订单单号、结算银行、代付类型、账户名称、结算银行信息、发起时间、结算金额、到帐金额、手续费、结算状态、失败原因、备注信息、账户余额、详情、 操作(同意/拒絕) 、操作員
+ -->
+    <div class="am-g tpl-g">
+        <!-- 内容区域 -->
+    	<form class="am-form tpl-form-border-form tpl-form-border-br" >
+        	<div class="am-form-group">
+            	<label for="info-id" class="am-u-sm-2 am-form-label">ID：</label>
+            	<div class="am-u-sm-10" id="info-id">{$info.id}</div>
+        	</div>
+            <div class="am-form-group">
+                <label for="info-oname" class="am-u-sm-2 am-form-label">投诉用户：</label>
+            	<div class="am-u-sm-10" id="info-oname">
+            		<p>ID：{$info.oid}</p>
+            		<p>昵称：{$info.oname}</p>
+            		<p>手机号：{$info.ophone}</p>
+            	</div>
+            </div>
+            <div class="am-form-group">
+               <label for="info-openBankName" class="am-u-sm-2 am-form-label">投诉时间：</label>
+            	<div class="am-u-sm-10" id="info-openBankName">{$info.createTime}</div>
+            </div>
+            <div class="am-form-group">
+                <label for="info-ordersn" class="am-u-sm-2 am-form-label">投诉对象：</label>
+                <div class="am-u-sm-10" id="info-ordersn">
+                {if condition="$info.destType eq 1"}
+                	<p>类型：个人</p>
+                	<p>ID：{$info.bid}</p>
+            		<p>昵称：{$info.bname}</p>
+            		<p>手机号：{$info.bphone}</p>
+                {else}
+                	<p>类型：群组</p>
+                	<p>ID：{$info.gid}</p>
+            		<p>群名称：{$info.gname}</p>
+                {/if}
+                </div>
+            </div>
+            <div class="am-form-group">
+               <label for="info-bankname" class="am-u-sm-2 am-form-label">投诉截图：</label>
+            	<div class="am-u-sm-10" id="info-bankname">
+            		{volist name="$info.imgs" id="img"}
+            		<p><a href="{$img}" target="_blank"><img src="{$img}" style="width:auto !important;min-width:120px; max-width:240px;"></a></p>
+            		{/volist}
+				</div>
+            </div>
+        </form>
+    </div>
+</body>
+
+</html>

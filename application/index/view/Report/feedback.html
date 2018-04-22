@@ -1,0 +1,73 @@
+{include file="Widget/header" /} 
+        <!-- 侧边导航栏 -->
+        {:widget('Widget/menu')}
+
+        <!-- 内容区域 -->
+        <div class="tpl-content-wrapper">
+            <div class="row-content am-cf">
+                <div class="row">
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                        <div class="widget am-cf">
+                            <div class="widget-head am-cf">
+                                <div class="widget-title  am-cf">投诉列表</div>
+                            </div>
+                            <div class="widget-body  am-fr">
+                            	<div class="am-u-sm-2 am-u-md-2 am-u-lg-1">
+                                    <div class="am-form-group">
+                                        <div class="am-btn-toolbar">
+                                            <div class="am-btn-group am-btn-group-xs">
+                                                <!--
+                                                <a href="__URL__/configs" class="am-btn am-btn-default am-btn-success"><span class="am-icon-setting"></span> 级别设置</a>  
+                                                -->                                        
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="am-u-sm-10 am-u-md-10 am-u-lg-11">
+                                <!--
+                                <form action="" class="am-form am-form-inline" role="form" method="post">
+ 	 								<div class="am-form-group am-input-group-sm tpl-form-border-form cl-p">
+    									<input type="number" name="id" value="{$ser['id']}" class="am-form-field" placeholder="ID">
+ 	 								</div>
+ 	 								<div class="am-form-group am-input-group-sm tpl-form-border-form cl-p">
+    									<input type="text" name="name" value="{$ser['name']}" class="am-form-field" placeholder="群名称">
+ 	 								</div>
+ 	 								<div class="am-form-group">
+    									<button type="submit" class="am-btn  am-btn-default am-btn-success tpl-table-list-field am-icon-search"></button>
+ 	 								</div>
+                                </form>
+                                --> 
+                                </div>
+                                <hr>
+                                <div class="am-u-sm-12">
+                                    <table width="100%" class="am-table am-table-compact am-table-striped tpl-table-black " id="example-r">
+                                        <thead>
+                                            <tr>
+                                                <th width=100>ID</th>
+                                                <th width=120>用户</th>
+                                                <th width=150>反馈意见</th>
+                                                <th width=100>反馈时间</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        {volist name="data" id="d"}
+                                            <tr class="gradeX" id="tr{$d.id}">
+                                                <td>{$d.id}</td>
+                                                <td><p style="margin:0;"><span style="display:inline-block;width:4em;">用户名：</span>{$d.oname}</p><p style="margin:0;"><span style="display:inline-block;width:4em;">ID：</span>{$d.oid}</p><p style="margin:0;"><span style="display:inline-block;width:4em;">手机号：</span>{$d.ophone}</p></td>
+                                                <td>{$d.content}</td>
+                                                <td>{$d.create_time}</td>
+                                            </tr>
+                                        {/volist}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="am-u-lg-12 am-cf"><div class="am-fr">{$data->render()}</div></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript">
+    	</script>
+    {include file="Widget/footer" /} 

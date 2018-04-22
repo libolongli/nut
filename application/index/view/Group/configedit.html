@@ -1,0 +1,91 @@
+{include file="Widget/header" /} 
+        <!-- 侧边导航栏 -->
+        {:widget('Widget/menu')}
+
+        <style type="text/css">
+            label {font-weight: 100;font-size: 12px;color:red; }
+            .required{color:red;vertical-align: middle;margin-right: 8px;}
+        </style>
+        <!-- 内容区域 -->
+        <div class="tpl-content-wrapper">
+            <div class="row-content am-cf">
+                <div class="row">
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                        <div class="widget am-cf">
+                            <div class="widget-head am-cf">
+                                <div class="widget-title am-fl">编辑群组级别</div>
+                                <div class="widget-function am-fr">
+                                <a href="JavaScript:history.back(-1)">返回</a>
+                                </div>
+                            </div>
+                            <div class="widget-body am-fr">
+                                <form class="am-form tpl-form-border-form" id="add-form" method="post" action="__URL__/configEdit">
+                                    
+                                    <div class="am-form-group">
+                                        <label for="name" class="am-u-sm-3 am-form-label"><span class="required">*</span>级别</label>
+                                        <div class="am-u-sm-9">
+                                            <input type="number" class="tpl-form-input" id="level" value="{$info.level}" readonly name="level" placeholder="请输入群组级别">
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <label for="desc" class="am-u-sm-3 am-form-label">有效时长（秒）</label>
+                                        <div class="am-u-sm-9">
+                                            <input type="number" class="tpl-form-input" id="expire" value="{$info.expire}" name="expire" placeholder="请输入有效时长">
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <label for="desc" class="am-u-sm-3 am-form-label">费用</label>
+                                        <div class="am-u-sm-9">
+                                            <input type="text" class="tpl-form-input" id="fee" value="{$info.fee}" name="fee" placeholder="请输入收费">
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <div class="am-u-sm-9 am-u-sm-push-3">
+                                        	<input type="hidden" value="{$info.id}" name="eid">
+                                            <button type="submit" class="am-btn am-btn-primary tpl-btn-bg-color-success ">保存</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <script type="text/javascript">
+        $(function(){
+            $("#add-form").validate({
+                rules:{
+                	level:{required:true},
+                	fee:{required:true},
+                	expire:{required:true}
+                },
+                messages:{
+                	level:"级别不能为空",
+                	fee:"费用不能为空",
+                	expire:"有效时长不能为空"
+                },
+                onkeyup:false,
+                focusCleanup:true,
+                success:"valid",
+                submitHandler:function(form){
+                	layer.load(2);
+                    $(form).ajaxSubmit({
+                        type:'post',
+                        dateType:'json',
+                        success:function(data){
+                        	layer.closeAll('loading');
+                            if(!data.code||typeof(data.code)=='undefined'){
+                                if(typeof(data.msg)!='undefined')layer.msg(data.msg,{icon:2,time:1000});return;
+                                layer.msg(data.msg,{time:1000});return;
+                            }else{
+                                layer.msg(data.msg,{time:1000});
+                                window.location.href = "{:url('Group/configs')}";
+                            }
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+{include file="Widget/footer" /} 

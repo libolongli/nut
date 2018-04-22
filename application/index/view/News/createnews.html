@@ -1,0 +1,95 @@
+{include file="Widget/header" /} 
+        <!-- 侧边导航栏 -->
+        {:widget('Widget/menu')}
+
+        <style type="text/css">
+            label {font-weight: 100;font-size: 12px;color:red; }
+            .required{color:red;vertical-align: middle;margin-right: 8px;}
+        </style>
+        <!-- 内容区域 -->
+        <div class="tpl-content-wrapper">
+            <div class="row-content am-cf">
+                <div class="row">
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                        <div class="widget am-cf">
+                            <div class="widget-head am-cf">
+                                <div class="widget-title am-fl">添加新闻公告</div>
+                                <div class="widget-function am-fr">
+                                <a href="JavaScript:history.back(-1)">返回</a>
+                                </div>
+                            </div>
+                            <div class="widget-body am-fr">
+                                <form class="am-form tpl-form-border-form" id="add-form" method="post" action="">
+                                    
+                                    <div class="am-form-group">
+                                        <label for="title" class="am-u-sm-1 am-form-label"><span class="required">*</span>标题</label>
+                                        <div class="am-u-sm-11">
+                                            <input type="text" class="tpl-form-input" id="title" name="title" placeholder="请输入标题">
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                   		  <label for="type" class="am-u-sm-1 am-form-label"><span class="required">*</span>类型</label>
+                                          <label class="am-radio-inline">
+                                            <input type="radio" value="0" name="type"> <span class="am-form-label">新闻</span>
+                                          </label>
+                                          <label class="am-radio-inline">
+                                            <input type="radio" value="1" name="type"> <span class="am-form-label">公告</span>
+                                          </label>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <label for="desc" class="am-u-sm-1 am-form-label"><span class="required">*</span>内容</label>
+                                        <div class="am-u-sm-11">
+                                            <div id="eidtor"  class="tpl-form-input"></div>
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <div class="am-u-sm-11 am-u-sm-push-1">
+                                            <button type="button" class="am-btn am-btn-primary tpl-btn-bg-color-success submit-btn">提交</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {css href="/public/static/js/ueditor/themes/default/css/umeditor.css" /}
+    <!-- 配置文件 -->
+    {js href="/public/static/js/ueditor/umeditor.config.js" /}
+    <!-- 编辑器源码文件 -->
+    {js href="/public/static/js/ueditor/umeditor.js" /}
+    <!-- 实例化编辑器 -->
+    <script type="text/javascript">
+        var ue = UM.getEditor('eidtor');
+        $(function(){
+        	$(".submit-btn").on("click",function(){
+        		var type=$("input[name='type']:checked").val();
+        		if(typeof(type)=='undefined'){
+        			layer.msg("请选择类型");
+        			return false;
+        		}
+        		var title=$("input[name='title']").val();
+        		if(title==''){
+        			layer.msg("请输入标题");
+        			$("input[name='title']").focus();
+        			return false;
+        		}
+        		var content=ue.getContent();
+        		if(content==''){
+        			layer.msg("请输入内容");return false;
+        		}
+        		layer.load(1);
+        		$.post('',{title:title,content:content,type:type},function(res){
+        			layer.closeAll('loading');
+        			layer.msg(res.msg);
+        			if(res.code==1){
+        				window.location.href="__URL__";
+        			}else{
+        				return false;
+        			}
+        		},'json');
+        	});
+        });
+    </script>
+{include file="Widget/footer" /} 

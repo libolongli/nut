@@ -1,0 +1,133 @@
+{include file="Widget/header" /} 
+        <!-- 侧边导航栏 -->
+        {:widget('Widget/menu')}
+
+        <!-- 内容区域 -->
+        <div class="tpl-content-wrapper">
+            <div class="row-content am-cf">
+                <div class="row">
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                        <div class="widget am-cf">
+                            <div class="widget-head am-cf">
+                                <div class="widget-title  am-cf">资产变动列表</div>
+                            </div>
+                            <div class="widget-body  am-fr">
+
+                                <div class="am-u-sm-12 am-u-md-12">
+                                <form action="" class="am-form am-form-inline" role="form" method="post">
+                                    <div class="am-input-group am-input-group-sm tpl-form-border-form cl-p">
+                                    <input type="text" class="am-form-field " name="id" value="{$search['id']}" placeholder="ID">
+                                    </div>
+ 	 								<div class="am-form-group am-input-group-sm tpl-form-border-form cl-p">
+                                    <input type="text" class="am-form-field "  data-am-datepicker readonly name="ctime" value="{$search['ctime']}" placeholder="时间">
+                                    </div>
+ 	 								<div class="am-form-group am-input-group-sm tpl-form-border-form cl-p">
+                                    <select data-am-selected  name="moneyType" class="am-form-field">
+  											<option value="0">交易方式</option>
+  											<option {if $search.moneyType eq 1}selected{/if} value="1">充值</option>
+  											<option {if $search.moneyType eq 2}selected{/if} value="2">提现</option>
+  											<option {if $search.moneyType eq 3}selected{/if} value="3">发红包</option>
+  											<option {if $search.moneyType eq 4}selected{/if} value="4">收红包</option>
+  											<option {if $search.moneyType eq 5}selected{/if} value="5">发转账</option>
+  											<option {if $search.moneyType eq 6}selected{/if} value="6">收转账</option>
+  											<option {if $search.moneyType eq 7}selected{/if} value="7">红包退回</option>
+  											<option {if $search.moneyType eq 8}selected{/if} value="8">转账退回</option>
+  											<option {if $search.moneyType eq 9}selected{/if} value="9">帐号购买</option>
+  											<option {if $search.moneyType eq 10}selected{/if} value="10">AA收款</option>
+  											<option {if $search.moneyType eq 11}selected{/if} value="11">AA付款</option>
+										</select>
+								    </div>
+								    <div class="am-form-group am-input-group-sm tpl-form-border-form cl-p">
+                                    <select data-am-selected  name="moneyDirect" class="am-form-field">
+  											<option value="0">交易形式</option>
+  											<option {if $search.moneyDirect eq 1}selected{/if} value="1">收入</option>
+  											<option {if $search.moneyDirect eq -1}selected{/if} value="-1">支出</option>
+										</select>
+								    </div>
+ 	 								<div class="am-form-group am-input-group-sm tpl-form-border-form cl-p">
+                                        <input type="text" class="am-form-field " style="width:300px;" name="nickname" value="{$search['nickname']}" placeholder="用户名">
+                                    </div>
+ 	 								<div class="am-form-group am-input-group-sm tpl-form-border-form cl-p">
+                                        <button class="am-btn  am-btn-default am-btn-success tpl-table-list-field am-icon-search" type="submit"></button>
+                                    </div>
+                                    <div class="am-form-group am-input-group-sm tpl-form-border-form cl-p">
+                                        <span style="color:red;font-weight:bolder;">合计：&yen; {$total|sprintf='%.2f',###}</span>
+                                    </div>
+                                </form>
+                                </div>
+	<!-- 交易时间、交易方式（红包/转账/付款）、交易形式（支出/收入）交易状态、余额 -->
+                                <div class="am-u-sm-12">
+                                    <table width="100%" class="am-table am-table-compact am-table-striped tpl-table-black " id="example-r">
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>用户名</th>
+                                                <th>姓名</th>
+                                                <th>交易金额</th>
+                                                <th>交易方式</th>
+                                                <th>交易形式</th>
+                                                <th>交易状态</th>
+                                                <th>交易时间</th>
+                                                <th>操作</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        {volist name="data" id="d"}
+                                            <tr class="gradeX" id="tr{$d.id}">
+                                                <td>{$d.id}</td>
+                                                <td>{$d.nickname}</td>
+                                                <td>{$d.realname}</td>
+                                                <td>{$d.amount}</td>
+                                                <td>{:walletType($d.moneyType)}</td>
+                                                <td>{if condition="$d.moneyDirect eq -1"}支出{else /}收入{/if}</td>
+                                                <td>成功</td>
+                                                <td>{:transformTime($d.occurTime)}</td>
+                                                <td>
+                                                    <div class="tpl-table-black-operation" data-id="{$d.id}">
+                                                        <a href="javascript:void(0);" onclick="walletdelete(this);" class="tpl-table-black-operation-del"><i class="am-icon-trash"></i> 删除</a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        {/volist}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="am-u-lg-12 am-cf"><div class="am-fr">{$data->render()}</div></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript">
+    function walletdelete(obj){
+    	var id=$(obj).parent('div').data('id');
+    	var onConfirm = function() {
+    		$.post("{:url('user/delwallet')}",{id:id},function(data){;
+            if(!data.code||typeof(data.code)=='undefined'){
+                if(typeof(data.msg)!='undefined')layer.msg(data.msg,{icon:2,time:1000});return;
+                layer.msg(data.msg,{time:1000});return;
+            }else{
+                layer.msg(data.msg,{time:1000});
+                $('#tr'+id).remove();
+            }
+        },'json');
+          };
+          var onCancel=function() { }
+          var $confirm = $('#my-confirm');
+          var confirm = $confirm.data('amui.modal');
+          if (confirm) {
+              confirm.options.onConfirm =  onConfirm;
+              confirm.options.onCancel =  onCancel;
+              confirm.toggle(this);
+            } else {
+              $confirm.modal({
+                relatedElement: this,
+                onConfirm: onConfirm,
+                onCancel: onCancel
+              });
+            }
+    }
+        
+    </script>
+    {include file="Widget/footer" /} 

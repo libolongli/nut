@@ -1,0 +1,200 @@
+{include file="Widget/header" /} 
+        <!-- 侧边导航栏 -->
+        {:widget('Widget/menu')}
+
+        <!-- 内容区域 -->
+        <div class="tpl-content-wrapper">
+            <div class="row-content am-cf">
+                <div class="row">
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                        <div class="widget am-cf">
+                            <div class="widget-head am-cf">
+                                <div class="widget-title  am-cf">用户列表</div>
+                            </div>
+                            <div class="widget-body  am-fr">
+                                <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                                <form action="" class="am-form am-form-inline" role="form" method="post">
+                                	<div class="am-form-group am-input-group-sm tpl-form-border-form cl-p">
+    									<input type="text" name="registTime" value="{$ser['registTime']}" class="am-form-field" data-am-datepicker readonly placeholder="注册时间">
+ 	 								</div>
+ 	 								<div class="am-form-group am-input-group-sm tpl-form-border-form cl-p">
+    									<input type="text" name="lastLogin" value="{$ser['lastLogin']}" class="am-form-field" data-am-datepicker readonly placeholder="最后登陆时间">
+ 	 								</div>
+ 	 								<div class="am-form-group am-input-group-sm tpl-form-border-form cl-p">
+    									<input type="text" name="lastIp" value="{$ser['lastIp']}" class="am-form-field" placeholder="最后登陆IP">
+ 	 								</div>
+ 	 								<div class="am-form-group am-input-group-sm tpl-form-border-form cl-p">
+    									<select data-am-selected  name="accountStatus" class="am-form-field">
+  											<option value="0">全部</option>
+  											<option {if $ser.accountStatus eq '010'}selected{/if} value="010">冻结</option>
+  											<option {if $ser.accountStatus eq '020'}selected{/if} value="020">财务冻结</option>
+										</select>
+ 	 								</div>
+ 	 								<div class="am-form-group am-input-group-sm tpl-form-border-form cl-p">
+    									<input type="number" name="id" value="{$ser['id']}" class="am-form-field" placeholder="ID">
+ 	 								</div>
+ 	 								<div class="am-form-group am-input-group-sm tpl-form-border-form cl-p">
+    									<input type="text" name="name" value="{$ser['name']}" class="am-form-field" placeholder="用户名">
+ 	 								</div>
+ 	 								<div class="am-form-group am-input-group-sm tpl-form-border-form cl-p">
+    									<input type="email" name="mail" value="{$ser['mail']}" class="am-form-field" placeholder="邮件">
+ 	 								</div>
+ 	 								<div class="am-form-group am-input-group-sm tpl-form-border-form cl-p">
+    									<input type="number" name="phone" value="{$ser['phone']}" class="am-form-field" placeholder="电话">
+ 	 								</div>
+ 	 								<div class="am-form-group">
+    									<button type="submit" class="am-btn  am-btn-default am-btn-success tpl-table-list-field am-icon-search"></button>
+ 	 								</div>
+                                </form>
+                                </div>
+                                <hr>
+                                <div class="am-u-sm-12">
+                                    <table width="100%" class="am-table am-table-compact am-table-striped tpl-table-black " id="example-r">
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>头像</th>
+                                                <th>用户名</th>
+                                                <th>真实姓名</th>
+                                                <th>电话</th>
+                                                <th>邮箱</th>
+                                                <th>余额</th>
+                                                <th>账户状态</th>
+                                                <th>注册时间</th>
+                                                <th>最后登录</th>
+                                                <th  align="center" width=48>状态</th>
+                                                <th>操作</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        {volist name="data" id="d"}
+                                            <tr class="gradeX" id="tr{$d.id}">
+                                                <td>{$d.id}</td>
+                                                <td><a href="javascript:layer.open({type: 2,title:'用户信息',area: ['500px', '440px'],shadeClose: true,fixed: false,maxmin: true,content: 'userInfo?id={$d.id}'});"><img src="{$d.headUrl}" style="width:50px;height:50px;"></a></td>
+                                                <td>{$d.name}</td>
+                                                <td>{$d.realName}</td>
+                                                <td width=156>{$d.mobile}</td>
+                                                <td>{$d.mail}</td>
+                                                <td style="color:red">{$d.money}</td>
+                                                <td>{if condition="$d.status eq 1"}正常{else /}冻结{/if} | {if condition="$d.wstatus eq 1"}财务正常{else /}财务冻结{/if}<br>提现限额：<span style="color:red">{$d.draw}</span></td>
+                                                <td>{$d.createTime|substr=###,0,10|date='Y-m-d H:i:s',###}</td>
+                                                <td>{if $d.last_login_time}时间：{$d.last_login_time|substr=###,0,10|date='Y-m-d H:i:s',###}{/if}{if $d.last_login_ip}<br>IP：{$d.last_login_ip}{/if}</td>
+                                                <td  align="center" width=48>{if condition="$d.isOnline eq 1"}<span class="am-icon-circle" style="color:#00D100;"></span>{else /}<span class="am-icon-circle" style="color:#grey;"></span>{/if}</td>
+                                                <td>
+                                                    <div class="tpl-table-black-operation">
+                                                        
+                                                        <a href="javascript:layer.open({type: 2,title:'充值',area: ['500px', '440px'],shadeClose: true,fixed: false,maxmin: true,content: 'userpay?id={$d.id}'});" class="tpl-table-black-operation-list"><i class="am-icon-money"></i> 充值</a>
+                                                        <a href="javascript:layer.open({type: 2,title:'编辑',area: ['600px', '460px'],shadeClose: true,fixed: false,maxmin: true,content: 'userEdit?id={$d.id}'});" class="tpl-table-black-operation-list"><i class="am-icon-pencil"></i> 编辑</a>
+                                                        <a href="javascript:userdelete({$d.id});" class="tpl-table-black-operation-del"><i class="am-icon-trash"></i> 删除</a>
+  														<div class="am-dropdown tpl-table-black-operation-list" data-am-dropdown>
+    														<a class="am-dropdown-toggle tpl-table-black-operation-list" data-am-dropdown-toggle> <span class="am-icon-caret-down"></span></a>
+    														<ul class="am-dropdown-content">
+      															<li><a href="javascript:layer.open({type: 2,title:'实名认证',area: ['400px', '300px'],shadeClose: true,fixed: false,maxmin: true,content: 'userAuth?id={$d.id}'});"><i class="am-icon-newspaper-o"></i> 实名认证</a></li>
+                                                        		<li><a href="javascript:layer.open({type: 2,title:'好友关系',area: ['50%', '800px'],shadeClose: true,fixed: false,maxmin: true,content: 'userFriend?id={$d.id}'});"><i class="am-icon-user"></i> 好友关系</a></li>
+                                                        		<li><a href="javascript:frozenAccount({$d.id},{if $d.status==0}1{else}0{/if});"> {if $d.status==0}解冻{else}冻结{/if}</a></li>
+                                                       			<li><a href="javascript:frozenWallet({$d.id},{if $d.wstatus==0}1{else}0{/if});"> {if $d.wstatus==0}财务解冻{else}财务冻结{/if}</a></li>
+                                                       			<li><a href="javascript:frozenAll({$d.id});"> 全部冻结</a></li>
+                                                       			<li><a href="javascript:drawlimit({$d.id},'{$d.draw}');"> 提现限额</a></li>
+                                                       		</ul>
+                                                       	</div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        {/volist}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="am-u-lg-12 am-cf"><div class="am-fr">{$data->render()}</div></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript">
+    function userdelete(id){
+        $('#my-confirm').modal({
+            relatedTarget: this,
+            onConfirm: function(options) {
+                $.post("{:url('User/deluser')}",{id:id},function(data){;
+                    if(!data.code||typeof(data.code)=='undefined'){
+                        if(typeof(data.msg)!='undefined')layer.msg(data.msg,{icon:2,time:1000});return;
+                        layer.msg(data.msg,{time:1000});return;
+                    }else{
+                        layer.msg(data.msg,{time:1000});
+                        location.reload();
+                        //$('#tr'+id).remove();
+                    }
+                },'json');
+            },
+            onCancel: function() { }
+        });
+    }
+    function frozenAccount(id,sta){
+    	var str=sta==0?"冻结":"解冻";
+    	layer.confirm("您确定要"+str+"该帐号吗？", {icon: 3, title:'操作提示'},function(index){
+    		$.post("__URL__/updateFrozen",{uid:id,sta:sta},function(res){
+    			layer.close(index);
+    			layer.msg(res.msg);
+    			if(res.code==1){
+    				window.location.reload();
+    			}else{
+    				return false;
+    			}
+    		},'json');
+    	});
+    }
+    function frozenWallet(id,sta){
+    	var str=sta==0?"冻结":"解冻";
+    	layer.confirm("您确定要财务"+str+"吗？", {icon: 3, title:'操作提示'},function(index){
+    		$.post("__URL__/frozenWallet",{uid:id,sta:sta},function(res){
+    			layer.close(index);
+    			layer.msg(res.msg);
+    			if(res.code==1){
+    				window.location.reload();
+    			}else{
+    				return false;
+    			}
+    		},'json');
+    	});
+    }
+    function frozenAll(id){
+    	layer.confirm("您确定要全部冻结该帐号吗？", {icon: 3, title:'操作提示'},function(index){
+    		$.post("__URL__/frozenAll",{uid:id},function(res){
+    			layer.close(index);
+    			layer.msg(res.msg);
+    			if(res.code==1){
+    				window.location.reload();
+    			}else{
+    				return false;
+    			}
+    		},'json');
+    	});
+    }
+    function drawlimit(id,draw){
+    	layer.prompt({
+    		  formType: 0,
+    		  value: draw,
+    		  title: '提款限额'
+    		}, function(value, index, elem){
+    			var reg = /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/;
+    			if(!reg.test(value)){
+    				layer.msg("金额格式不正确");
+    				return false;
+    			}
+    			layer.confirm("您确定要限额"+value+"吗？", {icon: 3, title:'操作提示'},function(index2){
+    	    		$.post("__URL__/updateLimit",{uid:id,value:value},function(res){
+    	    			layer.close(index2);
+    	    			layer.msg(res.msg);
+    	    			if(res.code==1){
+    	    				layer.close(index);
+    	    				window.location.reload();
+    	    			}else{
+    	    				return false;
+    	    			}
+    	    		},'json');
+    	    	});
+    		});
+    }
+    </script>
+    {include file="Widget/footer" /} 

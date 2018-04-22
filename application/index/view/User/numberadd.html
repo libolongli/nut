@@ -1,0 +1,135 @@
+{include file="Widget/header" /}
+        <!-- 侧边导航栏 -->
+        {:widget('Widget/menu')}
+
+        <style type="text/css">
+            .point{cursor: pointer;}
+            .point:hover{color: #fff}
+            label {font-weight: 100;font-size: 12px;color:red; }
+            .am-form-label{}
+             .theme-black .tpl-form-border-form input[type=text].min-width,.theme-white .tpl-form-border-form input[type=text].min-width{width:80px;display: inline-block;}
+            #rulelist span{margin-right: 10px;}
+            #rulelist span i.del{padding: 0 5px;cursor: pointer;}
+            #rulelist span span{font-size: 13px;cursor: pointer;}
+        </style>
+        <!-- 内容区域 -->
+        <div class="tpl-content-wrapper">
+            <div class="row-content am-cf">
+                <div class="row">
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                        <div class="widget am-cf">
+                            <div class="widget-head am-cf">
+                                <div class="widget-title am-fl">添加靓号</div>
+                                <div class="widget-function am-fr">
+                                <a href="JavaScript:history.back(-1)">返回</a>
+                                </div>
+                            </div>
+                            <div class="widget-body am-fr">
+                                <form class="am-form tpl-form-border-form" id="add-form" method="post" action="{:url('User/numberAdd')}">
+                                    <div class="am-form-group">
+                                        <label for="name" class="am-u-sm-3 am-form-label">靓号</label>
+                                        <div class="am-u-sm-9">
+                                            <input type="text" class="tpl-form-input" id="number" name="number" onblur="check(this.value)" placeholder="请输入靓号">
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <label for="name" class="am-u-sm-3 am-form-label">价格</label>
+                                        <div class="am-u-sm-9">
+                                            <input type="number" class="tpl-form-input" id="price" name="price" placeholder="请输入价格" value="{:config('numberPrice')}" >
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <label for="name" class="am-u-sm-3 am-form-label">匹配规则</label>
+                                        <div class="am-u-sm-9" id="rulelist">
+                                            <span id="rule0">
+                                                <input type="text" class="tpl-form-input min-width" id="rule" name="rule[]" placeholder="" >
+                                                <span onclick="addrule()" >添加</span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <label for="name" class="am-u-sm-3 am-form-label">匹配类型</label>
+                                        <div class="am-u-sm-9">
+                                            <select data-am-selected="{searchBox: 1}" name="type" id="type">
+                                                {volist name="type" id="val"}
+                                                <option value="{$val.type}" id="{$val.type}">{$val.type}</option>
+                                                {/volist}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <div class="am-u-sm-9 am-u-sm-push-3">
+                                            <button type="submit" class="am-btn am-btn-primary tpl-btn-bg-color-success ">提交</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <script type="text/javascript">
+    var i=1;
+        function addrule(){
+            var html='';
+            html+='<span id="rule'+i+'">'
+            html+='<input type="text" class="tpl-form-input min-width" name="rule[]" >'
+            html+='<i class="del" onclick="removerule('+i+')">×</i>'
+            html+='</span>'
+            i++;
+            $('#rulelist').prepend(html);
+        }
+        function removerule(id){
+            $("#rule"+id).remove();
+        }
+        $(function(){
+            $("#add-form").validate({
+                rules:{
+                    name:{
+                        required:true
+                    },
+                    sort:{
+                        required:true,
+                        digits:true
+                    },
+                    controller:{
+                        required:true
+                    },
+                    action:{
+                        required:true
+                    },
+                },
+                onkeyup:false,
+                focusCleanup:true,
+                success:"valid",
+                submitHandler:function(form){
+                    $(form).ajaxSubmit({
+                        type:'post',
+                        dateType:'json',
+                        success:function(data){
+                            if(!data.code||typeof(data.code)=='undefined'){
+                                if(typeof(data.msg)!='undefined')layer.msg(data.msg,{icon:2,time:1000});return;
+                                layer.msg(data.msg,{time:1000});return;
+                            }else{
+                                layer.msg(data.msg,{time:1000});
+                                window.location.href = "{:url('User/numberindex')}";
+                            }
+                        }
+                    });
+                }
+            });
+        });
+        function check(val){
+            $.post("{:url('check')}",{number:val},function(data){
+                if(data){
+                    $('#rulelist').html(data['rule']);
+                    $("#type #"+data['type']).attr('selected','selected');
+                    $(".am-selected-list li").removeClass('am-checked');
+                    $(".am-selected-list li[data-value="+data['type']+"]").addClass('am-checked');
+                    $('.am-selected-status').text(data['type']);
+                }
+            },'json');
+        }
+    </script>
+{include file="Widget/footer" /}
