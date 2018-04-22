@@ -53,7 +53,6 @@
                                         <thead>
                                             <tr>
                                                 <th>ID</th>
-                                                <th>头像</th>
                                                 <th>用户名</th>
                                                 <th>真实姓名</th>
                                                 <th>电话</th>
@@ -70,7 +69,6 @@
                                         {volist name="data" id="d"}
                                             <tr class="gradeX" id="tr{$d.id}">
                                                 <td>{$d.id}</td>
-                                                <td><a href="javascript:layer.open({type: 2,title:'用户信息',area: ['500px', '440px'],shadeClose: true,fixed: false,maxmin: true,content: 'userInfo?id={$d.id}'});"><img src="{$d.headUrl}" style="width:50px;height:50px;"></a></td>
                                                 <td>{$d.name}</td>
                                                 <td>{$d.realName}</td>
                                                 <td width=156>{$d.mobile}</td>

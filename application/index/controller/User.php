@@ -50,6 +50,10 @@ class User extends Common
             $where['u.last_login_ip']=$ser['lastIp'];
             $pageParam['page']=1;
         }
+
+        //只展示没删除的用户
+        $where['u.isdelete'] = 0;
+
         $this->assign('ser',$ser);
         $data=db('user')->alias('u')->where($where)->join('im_wallet w','u.id=w.userId')->field('u.*,w.money,w.status as wstatus,w.maxdraw as draw')->paginate(15, false, $pageParam);
         $this->assign('data',$data);
