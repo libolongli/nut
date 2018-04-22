@@ -55,7 +55,7 @@ class User extends Common
         $where['u.isdelete'] = 0;
 
         $this->assign('ser',$ser);
-        $data=db('user')->alias('u')->where($where)->join('im_wallet w','u.id=w.userId')->field('u.*,w.money,w.status as wstatus,w.maxdraw as draw')->paginate(15, false, $pageParam);
+        $data=db('user')->alias('u')->where($where)->join('im_wallet w','u.id=w.userId')->field('u.*,w.money,w.status as wstatus,w.maxdraw as draw')->order('u.id desc')->paginate(15, false, $pageParam);
         $this->assign('data',$data);
         return view();
     }
