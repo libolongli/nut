@@ -24,7 +24,7 @@ return [
     // 后台
     'login'=>'index/login/index',
     '/'=>'index/index/index',
-    'program'=>'index/system/program_404', //小程序过渡页面
+    'program'=>'home/index/program_404', //小程序过渡页面
     '[news]'=>[
         '/:nid'=>'home/news/info',
         '/'=>'home/news/page_404',
