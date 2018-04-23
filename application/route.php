@@ -26,7 +26,8 @@ return [
     '/'=>'index/index/index',
     
     '[news]'=>[
-        '/:nid'=>'home/news/info'
+        '/:nid'=>'home/news/info',
+        '/'=>'home/news/page_404',
     ],
     '[wap]'=>[
         'news'=>'wap/index/index',
