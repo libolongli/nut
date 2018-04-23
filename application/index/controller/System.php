@@ -276,4 +276,9 @@ class System extends Common
             $this->error('设置失败');
         }
     }
+
+    /*小程序过渡404页面*/
+    public function program_404(){
+        exit('敬请期待！');
+    }
 }
