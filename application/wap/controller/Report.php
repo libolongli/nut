@@ -22,12 +22,12 @@ class Report extends Base{
 
     public function reportG($groupId="0",$userId="0"){
         $list=$this->reportLogic->getTree(0,'group','cn');
-        return  $this->fetch("mobile/report/report",['title'=>lang('举报群组'),'list'=>$list,'type'=>'group','lang'=>'cn','act'=>request()->action()]);
+        return  $this->fetch("mobile/report",['title'=>lang('举报群组'),'list'=>$list,'type'=>'group','lang'=>'cn','act'=>request()->action()]);
     }
 
     public function reportFriend($friendId="0",$userId="0"){
         $list=$this->reportLogic->getTree(0,'user','cn');
-        return  $this->fetch("mobile/report/report",['title'=>lang('举报用户'),'list'=>$list,'type'=>'user','lang'=>'cn','act'=>request()->action()]);
+        return  $this->fetch("mobile/report",['title'=>lang('举报用户'),'list'=>$list,'type'=>'user','lang'=>'cn','act'=>request()->action()]);
     }
 
     public function getReport($pid=0,$type="user",$lang='cn'){
