@@ -43,6 +43,16 @@ class Withdraw extends Common
         return view();
     }
     
+    /**
+     * [updateStatus 提款状态]
+     * 1通过->打款->记录日志
+     * 2拒绝->账变记录->更高钱包的钱(im_wallet)
+     * @Author   nomius
+     * @DateTime 2018-05-15
+     * @param    [type]     $id  [description]
+     * @param    [type]     $sta [description]
+     * @return   [type]          [description]
+     */
     public function updateStatus($id,$sta){
         $r=db('UserWithdraw')->where("id",$id)->setField("tradestatus",$sta);
         if ($r!==false){
@@ -214,6 +224,9 @@ class Withdraw extends Common
     function batchupdateStatus(){
         $ids=input("ids/a",[]);
         $sta=input("sta",0);
+        if($sta =='1'){
+            $this->error("不支持批量通过,只能批量拒绝!");
+        }
         if ($ids){
             $r=db('UserWithdraw')->where("id",'in',$ids)->setField("tradestatus",$sta);
             if ($r!==false){
@@ -223,4 +236,78 @@ class Withdraw extends Common
             }
         }
     }
+
+    /**
+     * [payMoney 根据提款ID 来给用户代付提款]
+     * CREATE TABLE `im_important_config` (
+  `id` int(20) NOT NULL AUTO_INCREMENT,
+  `key_name` varchar(255) DEFAULT '' COMMENT '键的名字',
+  `key_value` varchar(255) DEFAULT '' COMMENT '对应的值',
+  PRIMARY KEY (`id`),
+  KEY `im_im_config_key` (`key_name`(191)) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='网站重要的配置信息';
+     * @Author   nomius
+     * @DateTime 2018-05-15
+     * @param    [type]     $uw_id [提款ID]
+     * @return   [type]            [description]
+     */
+    public function payMoney($id){
+
+        //需要检查 银行卡号 , 开户行 , 地址 姓名
+        $bankinfo=db('UserWithdraw')->alias('uw')->join("__USER_BANKCARD__ ub","ub.id=uw.cardid","left")->field('uw.ordersn,uw.amount,ub.cardNo,ub.bankName,ub.userName,ub.openBankName')->where("uw.id",$id)->find();
+        
+        $banks = array(
+            '中国建设银行'=>'CCB',
+            '建设银行'=>'CCB',
+            '中国工商银行'=>'ICBC',
+            '工商银行'=>'ICBC',
+            '中国农业银行'=>'ABC',
+            '农业银行'=>'ABC',
+            '中国银行'=>'BOC',
+            '中国招商银行'=>'CMB',
+            '招商银行'=>'CMB',
+            '中国民生银行'=>'CMBC',
+            '民生银行'=>'CMBC',
+            '中国光大银行'=>'CEB',
+            '光大银行'=>'CEB',
+            '中国华夏银行'=>'HXB',
+            '华夏银行'=>'HXB',
+            '中国兴业银行'=>'CIB',
+            '兴业银行'=>'CIB',
+            '上海浦发银行'=>'SPDB',
+            '中国中信银行'=>'CITIC',
+            '中信银行'=>'CITIC',
+            '广东发展银行'=>'GDB',
+            '中国平安银行'=>'SDB    ',
+            '平安银行'=>'SDB    ',
+            '中国邮政储蓄银行'=>'PSBC',
+            '北京银行'=>'BOB',
+            '中国交通银行'=>'BOCM',
+            '交通银行'=>'BOCM',
+        );
+
+        $data = array();
+        $data['accountNo'] = 'shopadmin_lingdianzhibo';
+        $data['amount'] = $bankinfo['amount'];
+        $data['bankAlias'] = 'CCB';
+        $data['bankNo'] = '6236683110004231671';
+        $data['thirdOrderId'] = 'ly'.date('YmdHis');
+        $data['place'] = '建设银行广东省分行';
+        $data['realName'] = '陈兴用';
+
+
+
+    }
+
+    /**
+     * [withdrawInfo 查看提款详情]
+     * @Author   nomius
+     * @DateTime 2018-05-15
+     * @param    [type]     $ordersn [description]
+     * @return   [type]              [description]
+     */
+    private function withdrawInfo($ordersn){
+
+    }
+
 }
