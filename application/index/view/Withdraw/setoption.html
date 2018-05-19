@@ -58,6 +58,10 @@
                <label for="mallpay" class="am-u-sm-2 am-form-label">商城支付开启状态：</label>
                 <div class="am-u-sm-10" id="mallpay"><label class="am-radio-inline"><input type="radio" {if condition="$info.mallpay eq 1"}checked{/if} name="mallpay" value="1">开启</label>&nbsp;<label class="am-radio-inline"><input type="radio" {if condition="$info.mallpay eq 0"}checked{/if} name="mallpay" value="0">关闭</label></div>
             </div>
+            <div class="am-form-group">
+               <label for="mallpay" class="am-u-sm-2 am-form-label">提款代付开启状态：</label>
+                <div class="am-u-sm-10" id="autowithdraw"><label class="am-radio-inline"><input type="radio" {if condition="$info.autowithdraw eq 1"}checked{/if} name="autowithdraw" value="1">开启</label>&nbsp;<label class="am-radio-inline"><input type="radio" {if condition="$info.autowithdraw eq 0"}checked{/if} name="autowithdraw" value="0">关闭</label></div>
+            </div>
                                     <div class="am-form-group">
                                         <div class="am-u-sm-9 am-u-sm-push-2">
                                             <button type="button" class="am-btn am-btn-primary tpl-btn-bg-color-success " id="save-btn">保存</button>

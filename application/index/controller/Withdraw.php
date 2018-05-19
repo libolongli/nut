@@ -116,6 +116,7 @@ class Withdraw extends Common
             ,'yearMaxWithdraw'
             ,'withdrawFee'
             ,'tradeFee'
+            ,'autowithdraw'
             ,'payway'
         ];
         $list=db("SysConfig")->where("_key",'in',$keys)->select();
@@ -125,6 +126,7 @@ class Withdraw extends Common
             "yearMaxWithdraw"=>"0.00",
             "withdrawFee"=>"0.00",
             "tradeFee"=>"0.00",
+            "autowithdraw"=>"0",
             "alipay"=>"0",
             "wxpay"=>"0",
             "mallpay"=>"0"
@@ -155,6 +157,7 @@ class Withdraw extends Common
         $alipay=input("alipay","");
         $wxpay=input("wxpay","");
         $mallpay=input("mallpay","");
+        $autowithdraw=input("autowithdraw","");
         if (!is_numeric($dayMaxWithdraw)||$dayMaxWithdraw<0){
             $this->error("日限额格式不正确");
         }
@@ -175,6 +178,7 @@ class Withdraw extends Common
         db("SysConfig")->where("_key","yearMaxWithdraw")->setField("_value",$yearMaxWithdraw);
         db("SysConfig")->where("_key","withdrawFee")->setField("_value",$withdrawFee);
         db("SysConfig")->where("_key","tradeFee")->setField("_value",$tradeFee);
+        db("SysConfig")->where("_key","autowithdraw")->setField("_value",$autowithdraw);
         db("SysConfig")->where("_key","payway")->where("_value",'like',"%alipay%")->setField("status",$alipay);
         db("SysConfig")->where("_key","payway")->where("_value",'like',"%wxpay%")->setField("status",$wxpay);
         db("SysConfig")->where("_key","payway")->where("_value",'like',"%mallpay%")->setField("status",$mallpay);
@@ -257,8 +261,10 @@ class Withdraw extends Common
     public function payMoney($id){
 
         //需要检查 银行卡号 , 开户行 , 地址 姓名
-        $bankinfo=db('UserWithdraw')->alias('uw')->join("__USER_BANKCARD__ ub","ub.id=uw.cardid","left")->field('uw.ordersn,uw.amount,ub.cardNo,ub.bankName,ub.userName,ub.openBankName')->where("uw.id",$id)->find();
+        $bankinfo=db('UserWithdraw')->alias('uw')->join("__USER_BANKCARD__ ub","ub.id=uw.cardid","left")->field('uw.ordersn,uw.recamount,ub.cardNo,ub.bankName,ub.userName,ub.openBankName')->where("uw.id",$id)->find();
         
+        print_r($bankinfo);exit;
+
         $banks = array(
             '中国建设银行'=>'CCB',
             '建设银行'=>'CCB',
