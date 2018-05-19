@@ -126,7 +126,8 @@ class Withdraw extends Common
             "withdrawFee"=>"0.00",
             "tradeFee"=>"0.00",
             "alipay"=>"0",
-            "wxpay"=>"0"
+            "wxpay"=>"0",
+            "mallpay"=>"0"
         ];
         if ($list){
             foreach ($list as $value){
@@ -153,6 +154,7 @@ class Withdraw extends Common
         $tradeFee=input("tradeFee",0);
         $alipay=input("alipay","");
         $wxpay=input("wxpay","");
+        $mallpay=input("mallpay","");
         if (!is_numeric($dayMaxWithdraw)||$dayMaxWithdraw<0){
             $this->error("日限额格式不正确");
         }
@@ -175,6 +177,7 @@ class Withdraw extends Common
         db("SysConfig")->where("_key","tradeFee")->setField("_value",$tradeFee);
         db("SysConfig")->where("_key","payway")->where("_value",'like',"%alipay%")->setField("status",$alipay);
         db("SysConfig")->where("_key","payway")->where("_value",'like',"%wxpay%")->setField("status",$wxpay);
+        db("SysConfig")->where("_key","payway")->where("_value",'like',"%mallpay%")->setField("status",$mallpay);
         $this->success("保存成功");
     }
     
