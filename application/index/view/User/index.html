@@ -81,8 +81,8 @@
                                                 <td>
                                                     <div class="tpl-table-black-operation">
                                                         
-                                                        <a href="javascript:layer.open({type: 2,title:'充值',area: ['500px', '440px'],shadeClose: true,fixed: false,maxmin: true,content: 'userpay?id={$d.id}'});" class="tpl-table-black-operation-list"><i class="am-icon-money"></i> 充值</a>
-                                                        <a href="javascript:layer.open({type: 2,title:'编辑',area: ['600px', '460px'],shadeClose: true,fixed: false,maxmin: true,content: 'userEdit?id={$d.id}'});" class="tpl-table-black-operation-list"><i class="am-icon-pencil"></i> 编辑</a>
+                                                        <a href="javascript:chongzhi({$d.id})" class="tpl-table-black-operation-list"><i class="am-icon-money"></i> 充值</a>
+                                                        <a href="javascript:userEdit({$d.id})" class="tpl-table-black-operation-list"><i class="am-icon-pencil"></i> 编辑</a>
                                                         <a href="javascript:userdelete({$d.id});" class="tpl-table-black-operation-del"><i class="am-icon-trash"></i> 删除</a>
   														<div class="am-dropdown tpl-table-black-operation-list" data-am-dropdown>
     														<a class="am-dropdown-toggle tpl-table-black-operation-list" data-am-dropdown-toggle> <span class="am-icon-caret-down"></span></a>
@@ -194,5 +194,14 @@
     	    	});
     		});
     }
+
+    function userEdit(id){
+        layer.open({type: 2,title:'编辑',area: ['600px', '460px'],shadeClose: true,fixed: false,maxmin: true,content: 'userEdit?id='+id});
+    }
+
+    function chongzhi(id){
+        layer.open({type: 2,title:'充值',area: ['500px', '440px'],shadeClose: true,fixed: false,maxmin: true,content: 'userpay?id='+id});
+    }
+
     </script>
     {include file="Widget/footer" /} 

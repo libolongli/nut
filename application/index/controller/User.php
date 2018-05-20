@@ -179,10 +179,15 @@ class User extends Common
         $member=db('user')->where($where)->find();
         if (request()->isPost()){
             $post_data=input('post.');
+
             $data=array(
-                'name'=>$post_data['name'],
                 'mobile'=>$post_data['mobile'],
             );
+
+            if(trim($post_data['pwd'])){
+                $data['pwd'] = md5($post_data['pwd']);
+            }
+
             $res=db('user')->where($where)->update($data);
             if($res){
                 $this->success('编辑成功');
