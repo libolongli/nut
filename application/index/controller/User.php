@@ -329,18 +329,6 @@ class User extends Common
         return view(); 
     }
 
-    /*删除充值记录*/
-    public function orderdelete(){
-        $id=input('id');
-        $where['id']=array('eq',$id);
-        $res=db('UserOrders')->where($where)->delete();
-        if($res){
-            $this->success('删除成功');
-        }else{
-            $this->error('删除失败');
-        }
-    }
-	
 	/**
      * 靓号管理
      */
