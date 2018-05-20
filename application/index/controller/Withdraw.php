@@ -54,16 +54,35 @@ class Withdraw extends Common
      * @return   [type]          [description]
      */
     public function updateStatus($id,$sta){
+        Db::startTrans();
+        if($sta == '2'){
         $r=db('UserWithdraw')->where("id",$id)->setField("tradestatus",$sta);
+             $sql = "UPDATE im_wallet AS w INNER JOIN  im_user_withdraw as uw ON w.userId = uw.userId SET w.money = w.money + uw.amount WHERE uw.id = $id";
+                Db::execute($sql);
+        }else{
+            //进行提款
+            $ret = $this->payMoney($id);
+            if($ret['status'] === false){
+                Db::rollback();  
+                $this->error($ret['msg']);
+            }
+            $r=db('UserWithdraw')->where("id",$id)->setField("tradestatus",$sta);
+        }
         if ($r!==false){
+             Db::commit();  
             $this->success("操作成功");
         }else{
+             Db::rollback();  
             $this->error("操作失败");
         }
     }
     
     public function info($id){
         $info=db('UserWithdraw')->alias('uw')->join('__USER__ u','uw.userId=u.id')->join("__USER_BANKCARD__ ub","ub.id=uw.cardid","left")->field('uw.*,u.name as oname,ub.cardNo,ub.bankName,ub.userName,ub.openBankName')->where("uw.id",$id)->find();
+        
+        //获取提款详情
+        $info['withdraw_msg'] = $info['tradestatus'] == 1 ?  $this->withdrawInfo($info['ordersn']) : '';
+       
         $this->assign("info",$info);
         return view();
     }
@@ -235,8 +254,23 @@ class Withdraw extends Common
             $this->error("不支持批量通过,只能批量拒绝!");
         }
         if ($ids){
-            $r=db('UserWithdraw')->where("id",'in',$ids)->setField("tradestatus",$sta);
+            Db::startTrans();
+            try{    
+                //更改状态.并且更改用户钱包金额
+                $r=db('UserWithdraw')->where("id",'in',$ids)->setField("tradestatus",$sta);
+                $ids_str = join(',',$ids);
+                $sql = "UPDATE im_wallet AS w INNER JOIN  im_user_withdraw as uw ON w.userId = uw.userId SET w.money = w.money + uw.amount WHERE uw.id IN ($ids_str)";
+                Db::execute($sql);
+                // 提交事务    
+                Db::commit();    
+                } catch (\Exception $e) {
+                    // 回滚事务
+                    Db::rollback();
+                }
+
+
             if ($r!==false){
+                 Db::rollback();
                 $this->success("操作成功");
             }else{
                 $this->error("操作失败");
@@ -246,24 +280,19 @@ class Withdraw extends Common
 
     /**
      * [payMoney 根据提款ID 来给用户代付提款]
-     * CREATE TABLE `im_important_config` (
-  `id` int(20) NOT NULL AUTO_INCREMENT,
-  `key_name` varchar(255) DEFAULT '' COMMENT '键的名字',
-  `key_value` varchar(255) DEFAULT '' COMMENT '对应的值',
-  PRIMARY KEY (`id`),
-  KEY `im_im_config_key` (`key_name`(191)) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='网站重要的配置信息';
      * @Author   nomius
      * @DateTime 2018-05-15
      * @param    [type]     $uw_id [提款ID]
      * @return   [type]            [description]
      */
     public function payMoney($id){
-
+        //确认商城代付是否开启
+        $config =  db('SysConfig')->where('_key','autowithdraw')->find();    
+        if($config['_value'] != 1){
+            return array('status'=>false,'msg'=>'未开启提款功能');
+        }
         //需要检查 银行卡号 , 开户行 , 地址 姓名
         $bankinfo=db('UserWithdraw')->alias('uw')->join("__USER_BANKCARD__ ub","ub.id=uw.cardid","left")->field('uw.ordersn,uw.recamount,ub.cardNo,ub.bankName,ub.userName,ub.openBankName')->where("uw.id",$id)->find();
-        
-        print_r($bankinfo);exit;
 
         $banks = array(
             '中国建设银行'=>'CCB',
@@ -295,27 +324,80 @@ class Withdraw extends Common
             '交通银行'=>'BOCM',
         );
 
+        $bankcode = isset($banks[$bankinfo['bankName']]) ? $banks[$bankinfo['bankName']] : false;
+        if(!$bankcode){
+            return array('status'=>false,'msg'=>'不支持该银行提款');
+        }
+        $mall_account = db('ImportantConfig')->where('key_name','mallpay_account')->find();
+        
         $data = array();
-        $data['accountNo'] = 'shopadmin_lingdianzhibo';
-        $data['amount'] = $bankinfo['amount'];
-        $data['bankAlias'] = 'CCB';
-        $data['bankNo'] = '6236683110004231671';
-        $data['thirdOrderId'] = 'ly'.date('YmdHis');
-        $data['place'] = '建设银行广东省分行';
-        $data['realName'] = '陈兴用';
+        $data['accountNo'] = $mall_account['key_value'];
+        $data['amount'] = $bankinfo['recamount'];
+        $data['bankAlias'] = $bankcode;
+        $data['bankNo'] = $bankinfo['cardNo'];
+        $data['thirdOrderId'] = $bankinfo['ordersn'];
+        $data['place'] = $bankinfo['openBankName'];
+        $data['realName'] = $bankinfo['userName'];
 
-
-
+        $ret = $this->mall_curl($data);
+        
+        //证明调用接口失败,再调用一次
+        if($ret['code']=='-99' && $ret['msg']=='支付部件返回空'){
+            $ret = $this->mall_curl($data);
+        }
+        return array('status'=>true,'msg'=>'提款成功');
     }
 
     /**
-     * [withdrawInfo 查看提款详情]
+     * [withdrawInfo 查看提款代付状态]
      * @Author   nomius
      * @DateTime 2018-05-15
      * @param    [type]     $ordersn [description]
      * @return   [type]              [description]
      */
     private function withdrawInfo($ordersn){
+        $mall_account = db('ImportantConfig')->where('key_name','mallpay_account')->find();
+        $data = array();
+        $data['accountNo'] = $mall_account['key_value'];
+        $data['thirdOrderId'] = $ordersn;
+        $ret = $this->mall_curl($data,'queryWithdrawOrder');
+        return $ret['msg'];
+
+    }
+
+    private function mall_curl($data,$url='withdraw'){
+        
+        $mall_key = db('ImportantConfig')->where('key_name','mallpay_key')->find();
+        $str ='';
+        foreach ($data as $key => $value) {
+            $str.= $value.'&';
+        }
+        $str.= $mall_key['key_value'];
+        $data['sign'] = md5($str);
+        $post_str = http_build_query($data);
+        $post_str = str_replace('+', '%20', $post_str);
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+          CURLOPT_URL => "http://122.200.133.177/mpay-mall/tp/".$url,
+          CURLOPT_RETURNTRANSFER => true,
+          CURLOPT_ENCODING => "",
+          CURLOPT_MAXREDIRS => 10,
+          CURLOPT_TIMEOUT => 30,
+          CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+          CURLOPT_CUSTOMREQUEST => "POST",
+          CURLOPT_POSTFIELDS => $post_str,
+          CURLOPT_HTTPHEADER => array(
+            "content-type: application/x-www-form-urlencoded"
+          ),
+        ));
+
+        $response = curl_exec($curl);
+        $err = curl_error($curl);
+        $info = curl_getinfo($curl);
+        curl_close($curl);
+        $response = json_decode($response,TRUE);
+
+        return $response;
 
     }
 

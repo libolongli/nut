@@ -81,6 +81,12 @@ ID、用户名、订单号、订单单号、结算银行、代付类型、账户
                <label for="info-tradeNote" class="am-u-sm-2 am-form-label">备注信息：</label>
             	<div class="am-u-sm-10" id="info-tradeNote">{$info.tradeNote}</div>
             </div>
+            {if $info.withdraw_msg != ''}
+            <div class="am-form-group">
+               <label for="info-tradeNote" class="am-u-sm-2 am-form-label">商城提款实时状态：</label>
+                <div class="am-u-sm-10" id="info-tradeNote">{$info.withdraw_msg}</div>
+            </div>
+            {/if}
         </form>
     </div>
 </body>
