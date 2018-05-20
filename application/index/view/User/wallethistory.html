@@ -60,7 +60,7 @@
                                     <table width="100%" class="am-table am-table-compact am-table-striped tpl-table-black " id="example-r">
                                         <thead>
                                             <tr>
-                                                <th>ID</th>
+                                                <th>用户ID</th>
                                                 <th>用户名</th>
                                                 <th>姓名</th>
                                                 <th>交易金额</th>
@@ -68,13 +68,12 @@
                                                 <th>交易形式</th>
                                                 <th>交易状态</th>
                                                 <th>交易时间</th>
-                                                <th>操作</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                         {volist name="data" id="d"}
                                             <tr class="gradeX" id="tr{$d.id}">
-                                                <td>{$d.id}</td>
+                                                <td>{$d.userId}</td>
                                                 <td>{$d.nickname}</td>
                                                 <td>{$d.realname}</td>
                                                 <td>{$d.amount}</td>
@@ -82,11 +81,6 @@
                                                 <td>{if condition="$d.moneyDirect eq -1"}支出{else /}收入{/if}</td>
                                                 <td>成功</td>
                                                 <td>{:transformTime($d.occurTime)}</td>
-                                                <td>
-                                                    <div class="tpl-table-black-operation" data-id="{$d.id}">
-                                                        <a href="javascript:void(0);" onclick="walletdelete(this);" class="tpl-table-black-operation-del"><i class="am-icon-trash"></i> 删除</a>
-                                                    </div>
-                                                </td>
                                             </tr>
                                         {/volist}
                                         </tbody>
@@ -100,34 +94,5 @@
             </div>
         </div>
         <script type="text/javascript">
-    function walletdelete(obj){
-    	var id=$(obj).parent('div').data('id');
-    	var onConfirm = function() {
-    		$.post("{:url('user/delwallet')}",{id:id},function(data){;
-            if(!data.code||typeof(data.code)=='undefined'){
-                if(typeof(data.msg)!='undefined')layer.msg(data.msg,{icon:2,time:1000});return;
-                layer.msg(data.msg,{time:1000});return;
-            }else{
-                layer.msg(data.msg,{time:1000});
-                $('#tr'+id).remove();
-            }
-        },'json');
-          };
-          var onCancel=function() { }
-          var $confirm = $('#my-confirm');
-          var confirm = $confirm.data('amui.modal');
-          if (confirm) {
-              confirm.options.onConfirm =  onConfirm;
-              confirm.options.onCancel =  onCancel;
-              confirm.toggle(this);
-            } else {
-              $confirm.modal({
-                relatedElement: this,
-                onConfirm: onConfirm,
-                onCancel: onCancel
-              });
-            }
-    }
-        
     </script>
     {include file="Widget/footer" /} 

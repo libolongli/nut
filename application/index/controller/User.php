@@ -207,18 +207,7 @@ class User extends Common
         }
     }
 
-    /*删除财务记录*/
-    public function delwallet(){
-        $id=input('id');
-        if($id){
-            $res=db('walletHistory')->where('id',$id)->setField('isdelete',1);
-            if($res!==false){
-                $this->success('删除成功');
-            }else{
-                $this->error('删除失败');
-            }
-        }
-    }
+    
     /*朋友圈管理*/
     public function feed(){
         $pageParam    = ['query' =>[]];
