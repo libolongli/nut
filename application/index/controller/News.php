@@ -78,4 +78,29 @@ class News extends Common
         $mess->setCustom(['type'=>$type,'nid'=>$id]);
         $res=$xinge->PushAllDevices(0, $mess);
     }
+
+    /**
+     * [del 删除站内信]
+     * @Author   nomius
+     * @DateTime 2018-05-20
+     * @param    [type]     $id [description]
+     * @return   [type]         [description]
+     */
+    public function del($id){
+        db('news')->delete($id);
+        $this->success("删除成功");
+    }
+
+    /**
+     * [info 查看站内信]
+     * @Author   nomius
+     * @DateTime 2018-05-20
+     * @param    [type]     $id [description]
+     * @return   [type]         [description]
+     */
+    public function info($id){
+        $info=db('News')->where("id",$id)->find();
+        $this->assign("info",$info);
+        return view();
+    }
 }

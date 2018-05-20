@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>新闻详情</title>
+    <meta name="description" content="">
+    <meta name="keywords" content="index">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Cache-Control" content="no-cache" />
+    <link rel="icon" type="image/png" href="__PUBLIC__i/favicon.png">
+    <link rel="apple-touch-icon-precomposed" href="__PUBLIC__i/app-icon72x72@2x.png">
+    <meta name="apple-mobile-web-app-title" content="Amaze UI" />
+    <link rel="stylesheet" href="__PUBLIC__css/amazeui.min.css" />
+    <link rel="stylesheet" href="__PUBLIC__css/amazeui.datatables.min.css" />
+    <link rel="stylesheet" href="__PUBLIC__css/app.css">
+</head>
+<style type="text/css">
+    .am-form-group div img{display: inline-block;width: 70px;height:70px;margin-right: 10px;}
+</style>
+<body class="theme-white">
+    <div class="am-g tpl-g">
+        <!-- 内容区域 -->
+    	<form class="am-form tpl-form-border-form tpl-form-border-br" >
+        	<div class="am-form-group">
+            	<label for="info-id" class="am-u-sm-2 am-form-label">ID：</label>
+            	<div class="am-u-sm-10" id="info-id">{$info.id}</div>
+        	</div>
+            <div class="am-form-group">
+                <label for="info-oname" class="am-u-sm-2 am-form-label">标题：</label>
+            	<div class="am-u-sm-10" id="info-oname">{$info.title}</div>
+            </div>
+            <div class="am-form-group">
+                <label for="info-ordersn" class="am-u-sm-2 am-form-label">内容:</label>
+            	<div class="am-u-sm-10" id="info-ordersn">{$info.content}</div>
+            </div>
+            <div class="am-form-group">
+               <label for="info-bankname" class="am-u-sm-2 am-form-label">创建时间：</label>
+            	<div class="am-u-sm-10" id="info-bankname">{$info.createTime}</div>
+            </div>
+        </form>
+    </div>
+</body>
+
+</html>

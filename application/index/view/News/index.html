@@ -44,8 +44,8 @@
                                                 <td>{$d.createTime}</td>
                                                 <td>
                                                     <div class="tpl-table-black-operation">
-                                                    	<a href="javascript:void(0);"><i class="am-icon-file"></i>查看详情</a>
-                                                    	<a href="javascript:void(0);"><i class="am-icon-trash"></i>删除</a>
+                                                    	<a href="javascript:info({$d.id});"><i class="am-icon-file"></i>查看详情</a>
+                                                    	<a href="javascript:deleteNew({$d.id});"><i class="am-icon-trash"></i>删除</a>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -61,5 +61,23 @@
             </div>
         </div>
         <script type="text/javascript">
+            function deleteNew(id){
+                layer.confirm("您确定要删除么?", {icon: 3, title:'操作提示'},function(index){
+                    $.post("__URL__/del",{id:id},function(res){
+                        layer.close(index);
+                        layer.msg(res.msg);
+                        if(res.code==1){
+                            window.location.reload();
+                        }else{
+                            return false;
+                        }
+                    },'json');
+                });
+
+            }
+            
+            function info(id){
+                layer.open({type: 2,title:'详情',area: ['50%', '400px'],shadeClose: true,fixed: false,maxmin: false,content: '__URL__/info?id='+id});                
+            }
     	</script>
     {include file="Widget/footer" /} 
