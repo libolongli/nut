@@ -20,7 +20,7 @@ class Widget extends Controller
         $html .='<span class="user-panel-logged-in-text">';
         $html .='<i class="am-icon-circle-o am-text-success tpl-user-panel-status-icon"></i>'.session('member')['username'];
         $html .='</span>';
-        $html .='<a href="javascript:;" class="tpl-user-panel-action-link"> <span class="am-icon-pencil"></span> 账号设置</a>';
+        $html .='<a href="/index/admin/adminedit?id='.session('member')['id'].'" class="tpl-user-panel-action-link"> <span class="am-icon-pencil"></span> 账号设置</a>';
         $html .='</div>';
         $html .='</div>';
         $html .='<ul class="sidebar-nav">';
