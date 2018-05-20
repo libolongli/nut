@@ -361,11 +361,17 @@ class Withdraw extends Common
         $data['place'] = $bankinfo['openBankName'];
         $data['realName'] = $bankinfo['userName'];
         $ret = $this->mall_curl($data);
-        
         //证明调用接口失败,再调用一次
         if($ret['code']=='-99' && $ret['msg']=='支付部件返回空'){
+            sleep(1);
             $ret = $this->mall_curl($data);
         }
+        //证明调用接口失败,再调用一次
+        if($ret['code']=='-99' && $ret['msg']=='出款失败'){
+            sleep(1);
+            $ret = $this->mall_curl($data);
+        }
+
         return array('status'=>true,'msg'=>'提款成功');
     }
 
