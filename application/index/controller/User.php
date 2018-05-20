@@ -253,11 +253,11 @@ class User extends Common
         $id=input('id');
         $where['id']=array('eq',$id);
         $imgs=db('feed')->where($where)->value('feed_imgs');
-        if($imgs){
-            foreach (explode(',', $imgs) as $key => $value) {
-                unlink($value);
-            }
-        }
+        // if($imgs){
+        //     foreach (explode(',', $imgs) as $key => $value) {
+        //         unlink($value);
+        //     }
+        // }
         $res=db('feed')->where($where)->delete();
         if($res){
             db('FeedComment')->where('feed_id',$id)->delete();
