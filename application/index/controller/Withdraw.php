@@ -38,7 +38,7 @@ class Withdraw extends Common
             $pageParam['page']=1;
         }
         $this->assign('search',$search);
-        $data=db('UserWithdraw')->alias('uw')->where($where)->join('__USER__ u','uw.userId=u.id')->field('uw.*,u.name as oname')->order("uw.createTime desc")->paginate(15, false, $pageParam);
+        $data=db('UserWithdraw')->alias('uw')->where($where)->join('__USER__ u','uw.userId=u.id')->join("__ADMIN__ a","uw.optid=a.id","left")->field('uw.*,u.name as oname,a.username')->order("uw.createTime desc")->paginate(15, false, $pageParam);
         $this->assign('data',$data);
         return view();
     }
@@ -54,9 +54,11 @@ class Withdraw extends Common
      * @return   [type]          [description]
      */
     public function updateStatus($id,$sta){
+        $admin_id = session('member')['id'];
         Db::startTrans();
         if($sta == '2'){
         $r=db('UserWithdraw')->where("id",$id)->setField("tradestatus",$sta);
+        $r=db('UserWithdraw')->where("id",$id)->setField("optid",$admin_id);
              $sql = "UPDATE im_wallet AS w INNER JOIN  im_user_withdraw as uw ON w.userId = uw.userId SET w.money = w.money + uw.amount WHERE uw.id = $id";
                 Db::execute($sql);
         }else{
@@ -67,6 +69,7 @@ class Withdraw extends Common
                 $this->error($ret['msg']);
             }
             $r=db('UserWithdraw')->where("id",$id)->setField("tradestatus",$sta);
+            $r=db('UserWithdraw')->where("id",$id)->setField("optid",$admin_id);
         }
         if ($r!==false){
              Db::commit();  
@@ -248,6 +251,7 @@ class Withdraw extends Common
     }
     
     function batchupdateStatus(){
+        $admin_id = session('member')['id'];
         $ids=input("ids/a",[]);
         $sta=input("sta",0);
         if($sta =='1'){
@@ -258,6 +262,7 @@ class Withdraw extends Common
             try{    
                 //更改状态.并且更改用户钱包金额
                 $r=db('UserWithdraw')->where("id",'in',$ids)->setField("tradestatus",$sta);
+                $r=db('UserWithdraw')->where("id",'in',$ids)->setField("optid",$admin_id);
                 $ids_str = join(',',$ids);
                 $sql = "UPDATE im_wallet AS w INNER JOIN  im_user_withdraw as uw ON w.userId = uw.userId SET w.money = w.money + uw.amount WHERE uw.id IN ($ids_str)";
                 Db::execute($sql);
@@ -328,6 +333,19 @@ class Withdraw extends Common
         if(!$bankcode){
             return array('status'=>false,'msg'=>'不支持该银行提款');
         }
+
+        if(!$bankinfo['cardNo']){
+            return array('status'=>false,'msg'=>'银行卡账号为空');
+        }
+
+        if(!$bankinfo['openBankName']){
+            return array('status'=>false,'msg'=>'开户行为空');
+        }
+
+        if(!$bankinfo['userName']){
+            return array('status'=>false,'msg'=>'真实姓名为空');
+        }
+
         $mall_account = db('ImportantConfig')->where('key_name','mallpay_account')->find();
         
         $data = array();
