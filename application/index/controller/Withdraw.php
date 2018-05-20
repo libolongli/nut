@@ -290,7 +290,7 @@ class Withdraw extends Common
      * @param    [type]     $uw_id [提款ID]
      * @return   [type]            [description]
      */
-    public function payMoney($id){
+    private function payMoney($id){
         //确认商城代付是否开启
         $config =  db('SysConfig')->where('_key','autowithdraw')->find();    
         if($config['_value'] != 1){
