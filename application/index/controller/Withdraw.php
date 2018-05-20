@@ -297,7 +297,7 @@ class Withdraw extends Common
             return array('status'=>false,'msg'=>'未开启提款功能');
         }
         //需要检查 银行卡号 , 开户行 , 地址 姓名
-        $bankinfo=db('UserWithdraw')->alias('uw')->join("__USER_BANKCARD__ ub","ub.id=uw.cardid","left")->field('uw.ordersn,uw.recamount,ub.cardNo,ub.bankName,ub.userName,ub.openBankName')->where("uw.id",$id)->find();
+        $bankinfo=db('UserWithdraw')->alias('uw')->join("__USER_BANKCARD__ ub","ub.id=uw.cardid","left")->field('uw.ordersn,uw.recamount,ub.cardNo,ub.bankName,ub.userName,ub.openBankName,uw.userId')->where("uw.id",$id)->find();
 
         $banks = array(
             '中国建设银行'=>'CCB',
@@ -339,11 +339,15 @@ class Withdraw extends Common
         }
 
         if(!$bankinfo['openBankName']){
-            return array('status'=>false,'msg'=>'开户行为空');
+            $bankinfo['openBankName'] = $bankinfo['bankName'];
         }
-
-        if(!$bankinfo['userName']){
-            return array('status'=>false,'msg'=>'真实姓名为空');
+        if(!$bankinfo['userName']){ 
+            //获取用户的真实姓名
+            $userinfo =  db('User')->where('id',$bankinfo['userId'])->find();
+            if(!$userinfo['realName']){
+                return array('status'=>false,'msg'=>'真实姓名为空');
+            }
+            $bankinfo['userName'] = $userinfo['realName'];
         }
 
         $mall_account = db('ImportantConfig')->where('key_name','mallpay_account')->find();
@@ -356,7 +360,6 @@ class Withdraw extends Common
         $data['thirdOrderId'] = $bankinfo['ordersn'];
         $data['place'] = $bankinfo['openBankName'];
         $data['realName'] = $bankinfo['userName'];
-
         $ret = $this->mall_curl($data);
         
         //证明调用接口失败,再调用一次
