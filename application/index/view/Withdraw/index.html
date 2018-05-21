@@ -18,7 +18,7 @@
                             <div class="widget-body  am-fr">
 
                                  <div class="am-u-sm-12 am-u-md-12">
-                                <form action="" class="am-form am-form-inline" role="form" method="post">
+                                <form action="" class="am-form am-form-inline" role="form" method="post" id="withdraw_form">
                                     <div class="am-input-group am-input-group-sm tpl-form-border-form cl-p">
                                     <input type="text" class="am-form-field " name="id" value="{$search['id']}" placeholder="ID">
                                     </div>
@@ -43,6 +43,8 @@
                                         <button class="am-btn  am-btn-default am-btn-success tpl-table-list-field am-icon-search" type="submit"></button>
                                         <!-- <button class="am-btn  am-btn-default am-btn-success tpl-table-list-field" onclick="batchUpdateStatus(1);" type="button">批量通过</button> -->
                                         <button class="am-btn  am-btn-default am-btn-success tpl-table-list-field" onclick="batchUpdateStatus(2);" type="button">批量拒绝</button>
+                                        <input type="hidden" name="fresh_status" value='0' id="fresh_status"/>
+                                        <button class="am-btn  am-btn-default am-btn-success tpl-table-list-field" onclick="freshStatus();" type="button">刷新状态</button>
                                     </div>
                                 </form>
                                 </div>
@@ -146,6 +148,11 @@
         			}
         		},'json');
         	});
+        }
+
+        function freshStatus(){
+            $('#fresh_status').val('1');
+            $('#withdraw_form').submit();
         }
     </script>
     {include file="Widget/footer" /} 
