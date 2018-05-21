@@ -48,6 +48,7 @@ class Withdraw extends Common
             foreach ($tmp as $k =>$v){
                 if($v['tradestatus'] == '1'){
                     $v['tradeNote'] = $this->withdrawInfo($v['ordersn']);
+                    $v['tradeNote'] = $v['tradeNote'] == 'ok' ? $v['tradeNote'] : "<span style='color:red'>{$v['tradeNote']}</span>";
                 }else{
                     $v['tradeNote'] = '未进行提款!';
                 }
