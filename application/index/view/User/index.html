@@ -87,8 +87,8 @@
   														<div class="am-dropdown tpl-table-black-operation-list" data-am-dropdown>
     														<a class="am-dropdown-toggle tpl-table-black-operation-list" data-am-dropdown-toggle> <span class="am-icon-caret-down"></span></a>
     														<ul class="am-dropdown-content">
-      															<li><a href="javascript:layer.open({type: 2,title:'实名认证',area: ['400px', '300px'],shadeClose: true,fixed: false,maxmin: true,content: 'userAuth?id={$d.id}'});"><i class="am-icon-newspaper-o"></i> 实名认证</a></li>
-                                                        		<li><a href="javascript:layer.open({type: 2,title:'好友关系',area: ['50%', '800px'],shadeClose: true,fixed: false,maxmin: true,content: 'userFriend?id={$d.id}'});"><i class="am-icon-user"></i> 好友关系</a></li>
+      															<li><a href="javascript:realName({$d.id})"><i class="am-icon-newspaper-o"></i> 实名认证</a></li>
+                                                        		<li><a href="javascript:freindRelationship({$d.id})"><i class="am-icon-user"></i> 好友关系</a></li>
                                                         		<li><a href="javascript:frozenAccount({$d.id},{if $d.status==0}1{else}0{/if});"> {if $d.status==0}解冻{else}冻结{/if}</a></li>
                                                        			<li><a href="javascript:frozenWallet({$d.id},{if $d.wstatus==0}1{else}0{/if});"> {if $d.wstatus==0}财务解冻{else}财务冻结{/if}</a></li>
                                                        			<li><a href="javascript:frozenAll({$d.id});"> 全部冻结</a></li>
@@ -201,6 +201,14 @@
 
     function chongzhi(id){
         layer.open({type: 2,title:'充值',area: ['500px', '440px'],shadeClose: true,fixed: false,maxmin: true,content: 'userpay?id='+id});
+    }
+
+    function realName(id){
+        layer.open({type: 2,title:'实名认证',area: ['400px', '300px'],shadeClose: true,fixed: false,maxmin: true,content: 'userAuth?id='+id});
+    }
+
+    function freindRelationship(id){
+        layer.open({type: 2,title:'好友关系',area: ['50%', '800px'],shadeClose: true,fixed: false,maxmin: true,content: 'userFriend?id='+id});
     }
 
     </script>
