@@ -39,6 +39,23 @@ class Withdraw extends Common
         }
         $this->assign('search',$search);
         $data=db('UserWithdraw')->alias('uw')->where($where)->join('__USER__ u','uw.userId=u.id')->join("__ADMIN__ a","uw.optid=a.id","left")->field('uw.*,u.name as oname,a.username')->order("uw.createTime desc")->paginate(15, false, $pageParam);
+       
+        /**
+         * 刷新第三方提款的状态
+         */
+        if(input("fresh_status") == '1'){
+            $tmp = $data->all();
+            foreach ($tmp as $k =>$v){
+                if($v['tradestatus'] == '1'){
+                    $v['tradeNote'] = $this->withdrawInfo($v['ordersn']);
+                    $v['tradeNote'] = $v['tradeNote'] == 'ok' ? $v['tradeNote'] : "<span style='color:red'>{$v['tradeNote']}</span>";
+                }else{
+                    $v['tradeNote'] = '未进行提款!';
+                }
+                $data[$k] = $v;
+            }
+        }
+
         $this->assign('data',$data);
         return view();
     }
