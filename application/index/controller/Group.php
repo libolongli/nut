@@ -23,7 +23,7 @@ class Group extends Common
             $pageParam['page']=1;
         }
         $this->assign('ser',$ser);
-        $data=db('group')->alias('g')->where($where)->join('__USER__ u','g.createrId=u.id')->field('g.*,u.name as oname,u.mobile as ophone,u.id oid')->paginate(15, false, $pageParam);
+        $data=db('group')->alias('g')->where($where)->join('__USER__ u','g.createrId=u.id')->field('g.*,u.name as oname,u.mobile as ophone,u.id oid')->order("g.createTime desc")->paginate(15, false, $pageParam);
         $this->assign('data',$data);
         return view();
     }
