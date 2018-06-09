@@ -75,7 +75,7 @@ class User extends Common
             $pageParam['page'] = 1;
         }
         if(!empty($search['id'])){
-            $where['w.id']=$search['id'];
+            $where['u.id']=$search['id'];
             $pageParam['page'] = 1;
         }
         if(!empty($search['moneyType'])){
