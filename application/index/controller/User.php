@@ -508,4 +508,28 @@ class User extends Common
         return view();
     }
 	
+    /**
+     * [bankcard 银行卡管理]
+     * @Author   nomius
+     * @DateTime 2018-06-09
+     * @return   [type]     [description]
+     */
+    public function bankcard($id){
+       $list=db('UserBankcard')->where(array('userId'=>$id))->field('id,cardNo,bankName,userName,openBankName')->paginate(15, false);
+        $this->assign('list',$list);
+        return view();
+    }
+
+    /**
+     * [delbankcard 删除银行卡]
+     * @Author   nomius
+     * @DateTime 2018-06-10
+     * @param    [type]     $id [description]
+     * @return   [type]         [description]
+     */
+    public function delbankcard($id){
+        db('UserBankcard')->delete($id);
+        $this->success("删除成功");
+    }
+
 }

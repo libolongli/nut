@@ -93,6 +93,7 @@
                                                        			<li><a href="javascript:frozenWallet({$d.id},{if $d.wstatus==0}1{else}0{/if});"> {if $d.wstatus==0}财务解冻{else}财务冻结{/if}</a></li>
                                                        			<li><a href="javascript:frozenAll({$d.id});"> 全部冻结</a></li>
                                                        			<li><a href="javascript:drawlimit({$d.id},'{$d.draw}');"> 提现限额</a></li>
+                                                                <li><a href="javascript:bankcard({$d.id});"> 银行卡管理</a></li>
                                                        		</ul>
                                                        	</div>
                                                     </div>
@@ -209,6 +210,10 @@
 
     function freindRelationship(id){
         layer.open({type: 2,title:'好友关系',area: ['50%', '800px'],shadeClose: true,fixed: false,maxmin: true,content: 'userFriend?id='+id});
+    }
+
+    function bankcard(id){
+        layer.open({type: 2,title:'银行卡管理',area: ['50%', '460px'],shadeClose: true,fixed: false,maxmin: true,content: 'bankcard?id='+id});
     }
 
     </script>
