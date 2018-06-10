@@ -72,27 +72,28 @@ class User extends Common
         $pageParam['query']=$search;
         if(!empty($search['nickname'])){
             $where['u.name']=array('like','%'.$search['nickname'].'%');
-            $pageParam['page'] = 1;
+            // $pageParam['page'] = 1;
         }
         if(!empty($search['id'])){
             $where['u.id']=$search['id'];
-            $pageParam['page'] = 1;
+            // $pageParam['page'] = 1;
         }
         if(!empty($search['moneyType'])){
             $where['w.moneyType']=$search['moneyType'];
-            $pageParam['page'] = 1;
+            // $pageParam['page'] = 1;
         }
         if(!empty($search['moneyDirect'])&&$search['moneyDirect']!=0){
             $where['w.moneyDirect']=$search['moneyDirect'];
-            $pageParam['page'] = 1;
+            // $pageParam['page'] = 1;
         }
         if (!empty($search['ctime'])){
             $time=$search['ctime'];
             $where['SUBSTR(w.occurTime,1,10)']=['between',[strtotime(date("$time 00:00:00")),strtotime(date("$time 23:59:59"))]];
             $search['ctime']="";
             $pageParam['query']['time']="";
-            $pageParam['page'] = 1;
+            // $pageParam['page'] = 1;
         }
+        $pageParam['page'] = input('page',1);
         $this->assign('search',$search);
         $total=db('walletHistory')->alias('w')->where($where)->join('im_user u','w.userId=u.id','LEFT')->sum('moneyDirect*amount');
         $this->assign("total",$total);
@@ -297,24 +298,25 @@ class User extends Common
         $pageParam['query']=$search;
         if(!empty($search['outTradeNo'])){
             $where['o.outTradeNo']=array('like','%'.$search['outTradeNo'].'%');
-            $pageParam['page']=1;
+            // $pageParam['page']=1;
         }
         if (!empty($search['userid'])){
             $where['o.userId']=$search['userid'];
-            $pageParam['page']=1;
+            // $pageParam['page']=1;
         }
         if (!empty($search['addTime'])){
             $where['o.createTime']=['between',[$search['addTime'].' 00:00:00',$search['addTime'].' 23:59:59']];
-            $pageParam['page']=1;
+            // $pageParam['page']=1;
         }
         if (!empty($search['payway'])){
             $where['o.plat']=$search['payway'];
-            $pageParam['page']=1;
+            // $pageParam['page']=1;
         }
         if (!empty($search['amount'])&&is_numeric($search['amount'])&&$search['amount']>0){
             $where['o.amount']=sprintf("%.2f",$search['amount']);
-            $pageParam['page']=1;
+            // $pageParam['page']=1;
         }
+        $pageParam['page'] = input('page',1);
         $this->assign('search',$search);
         $list=db('UserOrders')->alias('o')->where($where)->join('im_user u','o.userId=u.id','LEFT')->field('o.*,u.mobile,u.name')->order('createTime desc')->paginate(10, false, $pageParam);
         $data=$list->items();
