@@ -537,4 +537,61 @@ class User extends Common
         $this->success("删除成功");
     }
 
+    /**
+     * [moneysummary 存提款汇总]
+     * @Author   nomius
+     * @DateTime 2018-06-24
+     * @return   [type]     [description]
+     */
+    public function moneysummary(){
+        $this->inityesterday();
+        $yesterday = date('Y-m-d',strtotime('-1 day'));
+        $pageParam    = ['query' =>[]];
+        $where=$search=[];
+        $search['start_date']=input('start_date',$yesterday);
+        $search['end_date']=input('end_date',$yesterday);
+        $pageParam['query']=$search;
+        
+        $start_date = '2017-01-01';
+        $end_date = date('Y-m-d');
+        if(!empty($search['start_date'])){
+            $start_date = $search['start_date'];
+        }
+        if(!empty($search['end_date'])){
+            $end_date = $search['end_date'];
+        }
+        $where['ymd'] = array('between',array($start_date,$end_date));
+        $pageParam['page'] = input('page',1);
+        $this->assign('search',$search);
+        //求和
+        $total=db('moneySummary')->where($where)->field('sum(deposit_amount) as deposit_amount,sum(withdrawal_amount) as withdrawal_amount')->find();
+        $data=db('moneySummary')->where($where)->field('*')->paginate(15, false, $pageParam);
+        $this->assign('data',$data);
+        $this->assign('total',$total);
+        return view();
+    }
+
+    /**
+     * [init_yesterday 汇总昨天/以前的存提数据]
+     * @Author   nomius
+     * @DateTime 2018-06-24
+     * @return   [type]     [description]
+     */
+    private function inityesterday(){
+        $yesterday = date('Y-m-d',strtotime('-1 day'));
+        $row=db('moneySummary')->where(array('ymd'=>array('<=',$yesterday)))->order('id desc')->field('ymd')->find();
+        $date = $row['ymd'];
+        while($date != $yesterday){
+            $date = date('Y-m-d',strtotime($date) + 86400);
+            $start_time = strtotime($date) * 1000 ;//数据库里面存的是毫秒
+            $end_time = (strtotime($date) + 86400) * 1000 - 1; 
+            $deposit    = db('walletHistory')->where(array('moneyType'=>1,'occurTime'=>array('between',array($start_time,$end_time))))->sum('amount');
+            $withdrawal = db('walletHistory')->where(array('moneyType'=>2,'occurTime'=>array('between',array($start_time,$end_time))))->sum('amount');
+            if(!$deposit)    $deposit = 0;
+            if(!$withdrawal) $withdrawal = 0;
+            db('moneySummary')->insert(array('ymd'=>$date,'withdrawal_amount'=>$withdrawal,'deposit_amount'=>$deposit));
+        }
+    }
+
+
 }
