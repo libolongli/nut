@@ -69,6 +69,7 @@
                                                 <th>用户ID</th>
                                                 <th>用户名</th>
                                                 <th>姓名</th>
+                                                <th>转账收款用户名</th>
                                                 <th>交易金额</th>
                                                 <th>交易方式</th>
                                                 <th>交易形式</th>
@@ -82,6 +83,7 @@
                                                 <td>{$d.userId}</td>
                                                 <td>{$d.nickname}</td>
                                                 <td>{$d.realname}</td>
+                                                <td>{if condition="$d.moneyType eq 5"}{$d.getname}({$d.destId}){else /}--{/if}</td>
                                                 <td>{$d.amount}</td>
                                                 <td>{:walletType($d.moneyType)}</td>
                                                 <td>{if condition="$d.moneyDirect eq -1"}支出{else /}收入{/if}</td>

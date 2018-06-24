@@ -100,7 +100,7 @@ class User extends Common
         $today_withdrawal = db('walletHistory')->where(array('moneyType'=>2,'occurTime'=>array('>=',strtotime('today')*1000)))->sum('amount');
         $depost_withdrawal = $today_deposit - $today_withdrawal;
         $this->assign("total",array('total'=>$total,'today_deposit'=>$today_deposit,'today_withdrawal'=>$today_withdrawal,'depost_withdrawal'=>$depost_withdrawal));
-        $data=db('walletHistory')->alias('w')->where($where)->join('im_user u','w.userId=u.id','LEFT')->field('w.*,u.realname,u.name as nickname')->order('w.occurTime desc')->paginate(15, false, $pageParam);
+        $data=db('walletHistory')->alias('w')->where($where)->join('im_user u','w.userId=u.id','LEFT')->join('im_user ug','w.destId=ug.id','LEFT')->field('w.*,u.realname,u.name as nickname,ug.name as getname')->order('w.occurTime desc')->paginate(15, false, $pageParam);
         
         $this->assign('data',$data);
         return view();
