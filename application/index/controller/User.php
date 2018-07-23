@@ -550,6 +550,7 @@ class User extends Common
         $where=$search=[];
         $search['start_date']=input('start_date',$yesterday);
         $search['end_date']=input('end_date',$yesterday);
+        $search['userId']=input('userId','');
         $pageParam['query']=$search;
         
         $start_date = '2017-01-01';
@@ -585,10 +586,10 @@ class User extends Common
         $date = $row['ymd'];
         while($date != $yesterday){
             $date = date('Y-m-d',strtotime($date) + 86400);
-            $start_time = strtotime($date) * 1000 ;//数据库里面存的是毫秒
-            $end_time = (strtotime($date) + 86400) * 1000 - 1; 
-            $deposit    = db('walletHistory')->where(array('moneyType'=>1,'occurTime'=>array('between',array($start_time,$end_time))))->sum('amount');
-            $withdrawal = db('walletHistory')->where(array('moneyType'=>2,'occurTime'=>array('between',array($start_time,$end_time))))->sum('amount');
+            $start_time = $date.' 00:00:00';
+            $end_time =   $date.' 23:59:59';
+            $deposit    = db('userOrders')->where(array('status'=>1,'createTime'=>array('between',array($start_time,$end_time))))->sum('amount');
+            $withdrawal = db('userWithdraw')->where(array('tradeStatus'=>1,'createTime'=>array('between',array($start_time,$end_time))))->sum('amount');
             if(!$deposit)    $deposit = 0;
             if(!$withdrawal) $withdrawal = 0;
             db('moneySummary')->insert(array('ymd'=>$date,'withdrawal_amount'=>$withdrawal,'deposit_amount'=>$deposit));
