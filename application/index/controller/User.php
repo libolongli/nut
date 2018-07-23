@@ -561,14 +561,24 @@ class User extends Common
         if(!empty($search['end_date'])){
             $end_date = $search['end_date'];
         }
-        $where['ymd'] = array('between',array($start_date,$end_date));
-        $pageParam['page'] = input('page',1);
-        $this->assign('search',$search);
-        //求和
+
+        //如果有传用户ID的话则从 order表 和 withdraw 表中获取数据
+        if($search['userId']){
+            $data = array();
+            $start_time = $start_date.' 00:00:00';
+            $end_time = $end_date.' 23:59:59';
+            $deposit    = db('userOrders')->where(array('status'=>1,'createTime'=>array('between',array($start_time,$end_time))))->sum('amount');
+            $withdrawal = db('userWithdraw')->where(array('tradeStatus'=>1,'createTime'=>array('between',array($start_time,$end_time))))->sum('amount');
+            $data[] = array('id'=>1,'ymd'=>$search['start_date'].'-'.$search['end_date'],'deposit_amount'=>$deposit,'withdrawal_amount'=>$withdrawal);
+        }else{
+            $where['ymd'] = array('between',array($start_date,$end_date));
+            $pageParam['page'] = input('page',1);
+            $data=db('moneySummary')->where($where)->field('*')->paginate(15, false, $pageParam);
+        }
         $total=db('moneySummary')->where($where)->field('sum(deposit_amount) as deposit_amount,sum(withdrawal_amount) as withdrawal_amount')->find();
         $leftMoney = db('wallet')->sum('money');
-        $data=db('moneySummary')->where($where)->field('*')->paginate(15, false, $pageParam);
         $this->assign('data',$data);
+        $this->assign('search',$search);
         $this->assign('total',$total);
         $this->assign('leftMoney',$leftMoney);
         return view();
