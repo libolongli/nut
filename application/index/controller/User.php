@@ -565,9 +565,11 @@ class User extends Common
         $this->assign('search',$search);
         //求和
         $total=db('moneySummary')->where($where)->field('sum(deposit_amount) as deposit_amount,sum(withdrawal_amount) as withdrawal_amount')->find();
+        $leftMoney = db('wallet')->sum('money');
         $data=db('moneySummary')->where($where)->field('*')->paginate(15, false, $pageParam);
         $this->assign('data',$data);
         $this->assign('total',$total);
+        $this->assign('leftMoney',$leftMoney);
         return view();
     }
 
