@@ -22,7 +22,7 @@ class Withdraw extends Common
             $pageParam['page']=1;
         }
         if (!empty($search['id'])){
-            $where['uw.id']=$search['id'];
+            $where['u.id']=$search['id'];
             $pageParam['page']=1;
         }
         if (!empty($search['ordersn'])){
