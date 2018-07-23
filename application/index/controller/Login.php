@@ -17,13 +17,13 @@ class Login extends \think\Controller
     public function login(){
         $name=input('username');
         $password=input('password');
-        //$captcha=input('captcha');
+        $captcha=input('captcha');
         if(empty($name)) $this->error('请输入管理员名称');
         if(empty($password)) $this->error('请输入登录密码');
-        /*if(empty($captcha)) $this->error('请输入验证码');
+        if(empty($captcha)) $this->error('请输入验证码');
         if(!captcha_check($captcha)){
             $this->error('亲，验证码输入错误');
-        };*/
+        };
         $res=Admin::where('username',$name)->field('id,username,roleid')->where('password',MD5($password))->find();
         if($res){
             cookie("member",$res);
