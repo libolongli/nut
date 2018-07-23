@@ -16,6 +16,9 @@
                                 <div class="am-u-sm-12 am-u-md-12">
                                 <form action="" class="am-form am-form-inline" role="form" method="post">
  	 								<div class="am-form-group am-input-group-sm tpl-form-border-form cl-p">
+                                    <input type="text" class="am-form-field " name="userId" value="{$search['userId']}" placeholder="用户ID">
+                                    </div>
+                                    <div class="am-form-group am-input-group-sm tpl-form-border-form cl-p">
                                     <input type="text" class="am-form-field "  data-am-datepicker readonly name="start_date" value="{$search['start_date']}" placeholder="开始时间">
                                     </div>
  	 								<div class="am-form-group am-input-group-sm tpl-form-border-form cl-p">
@@ -57,7 +60,9 @@
                                         </tbody>
                                     </table>
                                 </div>
+                                {if $search.userId == ''}
                                 <div class="am-u-lg-12 am-cf"><div class="am-fr">{$data->render()}</div></div>
+                                {/if}
                             </div>
                         </div>
                     </div>
