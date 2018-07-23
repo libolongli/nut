@@ -53,8 +53,8 @@
                                         {volist name="data" id="d"}
                                             <tr class="gradeX" id="tr{$d.id}">
                                                 <td>{$d.ymd}</td>
-                                                <td>{$d.deposit_amount}</td>
-                                                <td>{$d.withdrawal_amount}</td>
+                                                <td>{$d.deposit_amount|sprintf='%.2f',###}</td>
+                                                <td>{$d.withdrawal_amount|sprintf='%.2f',###}</td>
                                             </tr>
                                         {/volist}
                                         </tbody>

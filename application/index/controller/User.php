@@ -567,8 +567,8 @@ class User extends Common
             $data = array();
             $start_time = $start_date.' 00:00:00';
             $end_time = $end_date.' 23:59:59';
-            $deposit    = db('userOrders')->where(array('status'=>1,'createTime'=>array('between',array($start_time,$end_time))))->sum('amount');
-            $withdrawal = db('userWithdraw')->where(array('tradeStatus'=>1,'createTime'=>array('between',array($start_time,$end_time))))->sum('amount');
+            $deposit    = db('userOrders')->where(array('status'=>1,'userId'=>$search['userId'],'createTime'=>array('between',array($start_time,$end_time))))->sum('amount');
+            $withdrawal = db('userWithdraw')->where(array('tradeStatus'=>1,'userId'=>$search['userId'],'createTime'=>array('between',array($start_time,$end_time))))->sum('amount');
             $data[] = array('id'=>1,'ymd'=>$search['start_date'].'-'.$search['end_date'],'deposit_amount'=>$deposit,'withdrawal_amount'=>$withdrawal);
         }else{
             $where['ymd'] = array('between',array($start_date,$end_date));
