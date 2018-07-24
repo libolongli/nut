@@ -48,15 +48,24 @@
             </div>
             <div class="am-form-group">
                <label for="alipay" class="am-u-sm-2 am-form-label">支付宝开启状态：</label>
-            	<div class="am-u-sm-10" id="alipay"><label class="am-radio-inline"><input type="radio" {if condition="$info.alipay eq 1"}checked{/if} name="alipay" value="1">开启</label>&nbsp;<label class="am-radio-inline"><input type="radio" {if condition="$info.alipay eq 0"}checked{/if} name="alipay" value="0">关闭</label></div>
+            	<div class="am-u-sm-10" id="alipay">
+                    <label class="am-checkbox-inline"><input type="checkbox" {if condition="$info.alipay.ios eq 1"}checked{/if} name="alipay.ios" value="1">开启IOS</label>&nbsp;
+                    <label class="am-checkbox-inline"><input type="checkbox" {if condition="$info.alipay.android eq 1"}checked{/if} name="alipay.android" value="1">开启ANDROID</label>
+                </div>
             </div>
             <div class="am-form-group">
                <label for="wxpay" class="am-u-sm-2 am-form-label">微信开启状态：</label>
-            	<div class="am-u-sm-10" id="wxpay"><label class="am-radio-inline"><input type="radio" {if condition="$info.wxpay eq 1"}checked{/if} name="wxpay" value="1">开启</label>&nbsp;<label class="am-radio-inline"><input type="radio" {if condition="$info.wxpay eq 0"}checked{/if} name="wxpay" value="0">关闭</label></div>
+            	<div class="am-u-sm-10" id="alipay">
+                    <label class="am-checkbox-inline"><input type="checkbox" {if condition="$info.wxpay.ios eq 1"}checked{/if} name="wxpay.ios" value="1">开启IOS</label>&nbsp;
+                    <label class="am-checkbox-inline"><input type="checkbox" {if condition="$info.wxpay.android eq 1"}checked{/if} name="wxpay.android" value="1">开启ANDROID</label>
+                </div>
             </div>
             <div class="am-form-group">
                <label for="mallpay" class="am-u-sm-2 am-form-label">商城支付开启状态：</label>
-                <div class="am-u-sm-10" id="mallpay"><label class="am-radio-inline"><input type="radio" {if condition="$info.mallpay eq 1"}checked{/if} name="mallpay" value="1">开启</label>&nbsp;<label class="am-radio-inline"><input type="radio" {if condition="$info.mallpay eq 0"}checked{/if} name="mallpay" value="0">关闭</label></div>
+                <div class="am-u-sm-10" id="alipay">
+                    <label class="am-checkbox-inline"><input type="checkbox" {if condition="$info.mallpay.ios eq 1"}checked{/if} name="mallpay.ios" value="1">开启IOS</label>&nbsp;
+                    <label class="am-checkbox-inline"><input type="checkbox" {if condition="$info.mallpay.android eq 1"}checked{/if} name="mallpay.android" value="1">开启ANDROID</label>
+                </div>
             </div>
             <div class="am-form-group">
                <label for="mallpay" class="am-u-sm-2 am-form-label">提款代付开启状态：</label>

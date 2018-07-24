@@ -175,7 +175,9 @@ class Withdraw extends Common
                 if ($value['_key']=="payway"){
                     $json=json_decode($value['_value'],true);
                     if (isset($json['paykey'])){
-                        $info[$json['paykey']]=$value['status'];
+                        $info[$json['paykey']] = array();
+                        $info[$json['paykey']]['ios']=$json['ios'];
+                        $info[$json['paykey']]['android']=$json['android'];
                     }
                 }
                 else{
@@ -183,6 +185,7 @@ class Withdraw extends Common
                 }
             }
         }
+
         $this->assign("info",$info);
         return view();
     }
@@ -193,9 +196,9 @@ class Withdraw extends Common
         $yearMaxWithdraw=input("yearMaxWithdraw",0);
         $withdrawFee=input("withdrawFee",0);
         $tradeFee=input("tradeFee",0);
-        $alipay=input("alipay","");
-        $wxpay=input("wxpay","");
-        $mallpay=input("mallpay","");
+        // $alipay=input("alipay","");
+        // $wxpay=input("wxpay","");
+        // $mallpay=input("mallpay","");
         $autowithdraw=input("autowithdraw","");
         if (!is_numeric($dayMaxWithdraw)||$dayMaxWithdraw<0){
             $this->error("日限额格式不正确");
@@ -212,15 +215,23 @@ class Withdraw extends Common
         if (!is_numeric($tradeFee)||$tradeFee<0||$tradeFee>100){
             $this->error("交易费率格式不正确");
         }
+
+        $payway = array('alipay'=>'支付宝','wxpay'=>'微信','mallpay'=>'商城支付');
+        foreach ($payway as $key => $value) {
+            $payway_value = array('paykey'=>$key,'name'=>$value);
+            $payway_value['ios'] = input($key.'_ios',0) ? 1 : 0;
+            $payway_value['android'] = input($key.'_android',0) ? 1 : 0;
+            db("SysConfig")->where("_key","payway")->where("_value",'like',"%{$key}%")->setField("_value",json_encode($payway_value));
+        }
         db("SysConfig")->where("_key","dayMaxWithdraw")->setField("_value",$dayMaxWithdraw);
         db("SysConfig")->where("_key","monthMaxWithdraw")->setField("_value",$monthMaxWithdraw);
         db("SysConfig")->where("_key","yearMaxWithdraw")->setField("_value",$yearMaxWithdraw);
         db("SysConfig")->where("_key","withdrawFee")->setField("_value",$withdrawFee);
         db("SysConfig")->where("_key","tradeFee")->setField("_value",$tradeFee);
         db("SysConfig")->where("_key","autowithdraw")->setField("_value",$autowithdraw);
-        db("SysConfig")->where("_key","payway")->where("_value",'like',"%alipay%")->setField("status",$alipay);
-        db("SysConfig")->where("_key","payway")->where("_value",'like',"%wxpay%")->setField("status",$wxpay);
-        db("SysConfig")->where("_key","payway")->where("_value",'like',"%mallpay%")->setField("status",$mallpay);
+        // db("SysConfig")->where("_key","payway")->where("_value",'like',"%alipay%")->setField("status",$alipay);
+        // db("SysConfig")->where("_key","payway")->where("_value",'like',"%wxpay%")->setField("status",$wxpay);
+        // db("SysConfig")->where("_key","payway")->where("_value",'like',"%mallpay%")->setField("status",$mallpay);
         $this->success("保存成功");
     }
     
