@@ -176,6 +176,47 @@ class System extends Common
             }
         }
     }
+
+    /**
+     * [programAdd 添加小程序]
+     * @Author   nomius
+     * @DateTime 2018-07-24
+     */
+    public function programAdd(){
+        if (request()->isPost()){
+            $post_data=input('post.');
+            $data=array(
+                'platform_id'=>$post_data['platform_id'],
+                'name'=>$post_data['name'],
+                'logo'=>$post_data['logo'],
+                'status'=>$post_data['status'],
+                'type'=>$post_data['type'],
+                'url'=>$post_data['url'],
+                'tags'=>$post_data['tags'],
+                'ios_status'=>$post_data['ios_status'],
+                'transfer_status'=>$post_data['transfer_status'],
+                'detail_url'=>$post_data['detail_url'],
+                'infos'=>$post_data['infos'],
+                'remark'=>$post_data['remark'],
+                'configs'=>$post_data['configs'],
+                'sort'=>$post_data['sort'],
+            );
+            $data['create_time'] = date('Y-m-d H:i:s');
+            $data['update_time'] = date('Y-m-d H:i:s');
+            $res=db('program')->insert($data);
+            if($res!==false){
+                $this->success('添加小程序成功');
+            }else{
+                $this->error('添加小程序失败');
+            }
+        }else{
+            return view();
+        }
+
+
+        echo '添加小程序';
+    }
+
 	/*小程序列表*/
     public function program(){
         $pageParam    = ['query' =>[]];
@@ -199,7 +240,20 @@ class System extends Common
         if (request()->isPost()){
             $post_data=input('post.');
             $data=array(
+                'platform_id'=>$post_data['platform_id'],
+                'name'=>$post_data['name'],
+                'logo'=>$post_data['logo'],
+                'status'=>$post_data['status'],
+                'type'=>$post_data['type'],
                 'url'=>$post_data['url'],
+                'tags'=>$post_data['tags'],
+                'ios_status'=>$post_data['ios_status'],
+                'transfer_status'=>$post_data['transfer_status'],
+                'detail_url'=>$post_data['detail_url'],
+                'infos'=>$post_data['infos'],
+                'remark'=>$post_data['remark'],
+                'configs'=>$post_data['configs'],
+                'sort'=>$post_data['sort'],
             );
             $res=db('program')->where('id',$id)->update($data);
             if($res!==false){

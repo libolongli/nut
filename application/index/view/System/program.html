@@ -11,17 +11,16 @@
                                 <div class="widget-title  am-cf">小程序列表</div>
                             </div>
                             <div class="widget-body  am-fr">
-                                <!-- 
+                                 
                                 <div class="am-u-sm-12 am-u-md-6 am-u-lg-6">
                                     <div class="am-form-group">
                                         <div class="am-btn-toolbar">
                                             <div class="am-btn-group am-btn-group-xs">
-                                                <a href="{:url('System/DocumentAdd')}" class="am-btn am-btn-default am-btn-success"><span class="am-icon-plus"></span> 新增</a>
-                                                 
+                                                <a href="{:url('System/programAdd')}" class="am-btn am-btn-default am-btn-success"><span class="am-icon-plus"></span> 新增</a>
                                             </div>
                                         </div>
                                     </div>
-                                </div>-->
+                                </div>
                                 <div class="am-u-sm-12 am-u-md-12 am-u-lg-3">
                                 <form action="" method="post">
                                     <div class="am-input-group am-input-group-sm tpl-form-border-form cl-p">
@@ -38,12 +37,13 @@
                                         <thead>
                                             <tr>
                                                 <th>ID</th>
+                                                <th>平台ID</th>
                                                 <th>名称</th>
                                                 <th>logo</th>
-                                                <th>经纬</th>
-                                                <th>地址</th>
-                                                <th>联系电话</th>
+                                                <th>类型</th>
                                                 <th>外部链接</th>
+                                                <th>备注</th>
+                                                <th>创建时间</th>
                                                 <th>操作</th>
                                             </tr>
                                         </thead>
@@ -51,16 +51,17 @@
                                         {volist name="data" id="d"}
                                             <tr class="gradeX" id="tr{$d.id}">
                                                 <td>{$d.id}</td>
+                                                <td>{$d.platform_id}</td>
                                                 <td>{$d.name}</td>
                                                 <td><img src="{$d.logo}" style="width:40px;height: auto"></td>
-                                                <td>纬：{$d.lat}<br/>经：{$d.lng}</td>
-                                                <td>{$d.province}-{$d.city}-{$d.county}-{$d.address}</td>
-                                                <td>{$d.phone}</td>
+                                                <td>{if $d.type eq '2'}在浏览器打开{elseif $d.type eq '1'}WEBVIEW{else}其它{/if}</td>
                                                 <td>{$d.url}</td>
+                                                <td>{$d.remark}</td>
+                                                <td>{$d.create_time}</td>
                                                 <td>
                                                   <div class="tpl-table-black-operation">
                                                     <a href="{:url('System/programEdit')}?id={$d.id}"><i class="am-icon-pencil"></i> 编辑</a>
-                                                    <!-- <a href="javascript:programdelete({$d.id});" class="tpl-table-black-operation-del"><i class="am-icon-trash"></i> 删除</a> -->
+                                                    <a href="javascript:programdelete({$d.id});" class="tpl-table-black-operation-del"><i class="am-icon-trash"></i> 删除</a>
                                                   </div>
                                                 </td>
                                             </tr>

@@ -21,98 +21,97 @@
                                 </div>
                             </div>
                             <div class="widget-body am-fr">
-                                <form class="am-form tpl-form-border-form" id="add-form" method="post" action="{:url('System/programEdit')}">
+                                <form class="am-form tpl-form-border-form" id="add-form" method="post" action="{:url('System/programAdd')}">
                                      <div class="am-form-group">
                                         <label for="platform_id" class="am-u-sm-3 am-form-label" style="padding-top: 0px">商户提供方ID</label>
                                         <div class="am-u-sm-9">
-                                            <input type="text" value="{$info.platform_id}" class="tpl-form-input"  name="platform_id" >
+                                            <input type="text"  class="tpl-form-input"  name="platform_id" >
                                         </div>
                                     </div>
                                     <div class="am-form-group">
                                         <label for="name" class="am-u-sm-3 am-form-label" style="padding-top: 0px">名称</label>
                                         <div class="am-u-sm-9">
-                                            <input type="text" value="{$info.name}" class="tpl-form-input"  name="name" >
+                                            <input type="text"  class="tpl-form-input"  name="name" >
                                         </div>
                                     </div>
                                     <div class="am-form-group">
                                         <label for="name" class="am-u-sm-3 am-form-label" style="padding-top: 0px">logo</label>
                                         <div class="am-u-sm-9">
-                                            <input type="text" value="{$info.logo}" class="tpl-form-input"  name="logo" placeholder="http://">
+                                            <input type="text"  class="tpl-form-input"  name="logo" placeholder="http://">
                                         </div>
                                     </div>
                                     <div class="am-form-group">
                                         <label for="name" class="am-u-sm-3 am-form-label" style="padding-top: 0px">类型</label>
                                         <div class="am-u-sm-9">
-                                            <label class="am-radio-inline"><input type="radio" {if condition="$info.type eq 1"}checked{/if} name="type" value="1">浏览器</label>&nbsp;
-                                            <label class="am-radio-inline"><input type="radio" {if condition="$info.type eq 2"}checked{/if} name="type" value="2">WEBVIEW</label>
+                                            <label class="am-radio-inline"><input type="radio" name="type" value="1">浏览器</label>&nbsp;
+                                            <label class="am-radio-inline"><input type="radio" name="type" value="2">WEBVIEW</label>
                                         </div>
                                     </div>
                                     <div class="am-form-group">
                                         <label for="controller" class="am-u-sm-3 am-form-label" style="padding-top: 0px">链接地址</label>
                                         <div class="am-u-sm-9">
-                                            <input type="text" value="{$info.url}" class="tpl-form-input" id="url" name="url" placeholder="http://">
+                                            <input type="text"  class="tpl-form-input" id="url" name="url" placeholder="http://">
                                         </div>
                                     </div>
                                    
                                     <div class="am-form-group">
                                         <label for="name" class="am-u-sm-3 am-form-label" style="padding-top: 0px">标签</label>
                                         <div class="am-u-sm-9">
-                                            <input type="text" value="{$info.tags}" class="tpl-form-input"  name="tags" placeholder="1,2,3">
+                                            <input type="text" class="tpl-form-input"  name="tags" placeholder="1,2,3">
                                         </div>
                                     </div>
                                      <div class="am-form-group">
                                         <label for="name" class="am-u-sm-3 am-form-label" style="padding-top: 0px">android状态</label>
                                         <div class="am-u-sm-9">
-                                            <label class="am-radio-inline"><input type="radio" {if condition="$info.status eq 1"}checked{/if} name="status" value="1">开启</label>&nbsp;
-                                            <label class="am-radio-inline"><input type="radio" {if condition="$info.status eq 0"}checked{/if} name="status" value="0">关闭</label>
+                                            <label class="am-radio-inline"><input type="radio"  name="status" value="1">开启</label>&nbsp;
+                                            <label class="am-radio-inline"><input type="radio"  name="status" value="0">关闭</label>
                                         </div>
                                     </div>
                                      <div class="am-form-group">
                                         <label for="name" class="am-u-sm-3 am-form-label" style="padding-top: 0px">ios状态</label>
                                         <div class="am-u-sm-9">
-                                            <label class="am-radio-inline"><input type="radio" {if condition="$info.ios_status eq 1"}checked{/if} name="ios_status" value="1">开启</label>&nbsp;
-                                            <label class="am-radio-inline"><input type="radio" {if condition="$info.ios_status eq 0"}checked{/if} name="ios_status" value="0">关闭</label>
+                                            <label class="am-radio-inline"><input type="radio" name="ios_status" value="1">开启</label>&nbsp;
+                                            <label class="am-radio-inline"><input type="radio" name="ios_status" value="0">关闭</label>
                                         </div>
                                     </div>
                                      <div class="am-form-group">
                                         <label for="name" class="am-u-sm-3 am-form-label" style="padding-top: 0px">transfer_status</label>
                                         <div class="am-u-sm-9">
-                                            <label class="am-radio-inline"><input type="radio" {if condition="$info.transfer_status eq 1"}checked{/if} name="transfer_status" value="1">开启</label>&nbsp;
-                                            <label class="am-radio-inline"><input type="radio" {if condition="$info.transfer_status eq 0"}checked{/if} name="transfer_status" value="0">关闭</label>
+                                            <label class="am-radio-inline"><input type="radio" name="transfer_status" value="1">开启</label>&nbsp;
+                                            <label class="am-radio-inline"><input type="radio" name="transfer_status" value="0">关闭</label>
                                         </div>
                                     </div>
                                      <div class="am-form-group">
                                         <label for="name" class="am-u-sm-3 am-form-label" style="padding-top: 0px">详情界面的url</label>
                                         <div class="am-u-sm-9">
-                                            <input type="text" value="{$info.detail_url}" class="tpl-form-input"  name="detail_url" placeholder="http://" >
+                                            <input type="text"  class="tpl-form-input"  name="detail_url" placeholder="http://" >
                                         </div>
                                     </div>
                                      <div class="am-form-group">
                                         <label for="name" class="am-u-sm-3 am-form-label" style="padding-top: 0px">游戏介绍</label>
                                         <div class="am-u-sm-9">
-                                            <input type="text" value="{$info.infos}" class="tpl-form-input"  name="infos" >
+                                            <input type="text"  class="tpl-form-input"  name="infos" >
                                         </div>
                                     </div>
                                      <div class="am-form-group">
                                         <label for="name" class="am-u-sm-3 am-form-label" style="padding-top: 0px">备注</label>
                                         <div class="am-u-sm-9">
-                                            <input type="text" value="{$info.remark}" class="tpl-form-input"  name="remark" >
+                                            <input type="text" class="tpl-form-input"  name="remark" >
                                         </div>
                                     </div>
                                      <div class="am-form-group">
                                         <label for="name" class="am-u-sm-3 am-form-label" style="padding-top: 0px">配置项(json格式)</label>
                                         <div class="am-u-sm-9">
-                                            <input type="text" value='{$info.configs}' class="tpl-form-input"  name="configs" >
+                                            <input type="text" class="tpl-form-input"  name="configs" >
                                         </div>
                                     </div>
                                      <div class="am-form-group">
                                         <label for="name" class="am-u-sm-3 am-form-label" style="padding-top: 0px">排序</label>
                                         <div class="am-u-sm-9">
-                                            <input type="text" value="{$info.sort}" class="tpl-form-input"  name="sort" placeholder="顺序越大越靠前">
+                                            <input type="text"  class="tpl-form-input"  name="sort" placeholder="顺序越大越靠前">
                                         </div>
                                     </div>
 
-                                    <input type="hidden" name="id" value={$info.id} />
                                     <div class="am-form-group">
                                         <div class="am-u-sm-9 am-u-sm-push-3">
                                             <button type="submit" class="am-btn am-btn-primary tpl-btn-bg-color-success ">提交</button>
