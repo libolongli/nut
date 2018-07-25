@@ -74,8 +74,22 @@
                                                 <td>{$d.name}</td>
                                                 <td>{$d.realName}</td>
                                                 <td>{$d.amount}</td>
-                                                <td>{$d.tradeType}</td>
-                                                <td>{$d.transIo}</td>
+                                                <td>
+                                                    {if $d.tradeType eq '1'}充值{/if}
+                                                    {if $d.tradeType eq '2'}提现申请{/if}
+                                                    {if $d.tradeType eq '3'}提现拒绝{/if}
+                                                    {if $d.tradeType eq '4'}发红包{/if}
+                                                    {if $d.tradeType eq '5'}收红包{/if}
+                                                    {if $d.tradeType eq '6'}红包退回{/if}
+                                                    {if $d.tradeType eq '7'}发转账{/if}
+                                                    {if $d.tradeType eq '8'}收转账{/if}
+                                                    {if $d.tradeType eq '9'}转账退回{/if}
+                                                    {if $d.tradeType eq '10'}用户列表充值{/if}
+                                                    {if $d.tradeType eq '11'}用户列表扣款{/if}
+                                                </td>
+                                                <td>
+                                                    {if $d.transIo eq '-1'}支出{else}收入{/if}
+                                                </td>
                                                 <td>{$d.money}</td>
                                                 <td>{$d.createTime}</td>
                                             </tr>
