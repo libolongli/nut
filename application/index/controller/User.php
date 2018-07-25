@@ -634,4 +634,43 @@ class User extends Common
         return view();
     }
 
+    /**
+     * [moneyChange 账变记录]
+     * @Author   nomius
+     * @DateTime 2018-07-25
+     * @return   [type]     [description]
+     */
+    public function moneyChange(){
+        $pageParam    = ['query' =>[]];
+        $where=$search=[];
+        $search['name']=input('name','');
+        $search['userId']=input("userId","");
+        $search['tradeType']=input("tradeType","");
+        $search['transIo']=input("transIo","");
+        $search['createTime']=input("createTime","");
+        $pageParam['query']=$search;
+        if(!empty($search['name'])){
+            $where['name']=array('like','%'.$search['name'].'%');
+        }
+        if(!empty($search['userId'])){
+            $where['userId']=$search['userId'];
+        }
+        if(!empty($search['tradeType'])){
+            $where['tradeType']=$search['tradeType'];
+        }
+        if(!empty($search['transIo'])){
+            $where['transIo']=$search['transIo'];
+        }
+        if (!empty($search['createTime'])){
+            $time=$search['createTime'];
+            $where['createTime']=['between',["$time 00:00:00","$time 23:59:59"]];
+        }
+        $pageParam['page'] = input('page',1);
+        $this->assign('search',$search);
+        
+        $data=db('moneyChange')->where($where)->order('id desc')->paginate(15, false, $pageParam);
+        $this->assign('data',$data);
+        return view();
+    }
+
 }

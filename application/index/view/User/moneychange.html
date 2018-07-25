@@ -1,0 +1,95 @@
+{include file="Widget/header" /} 
+        <!-- 侧边导航栏 -->
+        {:widget('Widget/menu')}
+
+        <!-- 内容区域 -->
+        <div class="tpl-content-wrapper">
+            <div class="row-content am-cf">
+                <div class="row">
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                        <div class="widget am-cf">
+                            <div class="widget-head am-cf">
+                                <div class="widget-title  am-cf">账变记录</div>
+                            </div>
+                            <div class="widget-body  am-fr">
+
+                                <div class="am-u-sm-12 am-u-md-12">
+                                <form action="" class="am-form am-form-inline" role="form" method="post">
+                                    <div class="am-input-group am-input-group-sm tpl-form-border-form cl-p">
+                                    <input type="text" class="am-form-field " name="userId" value="{$search['userId']}" placeholder="用户ID">
+                                    </div>
+ 	 								<div class="am-form-group am-input-group-sm tpl-form-border-form cl-p">
+                                    <input type="text" class="am-form-field "  data-am-datepicker readonly name="createTime" value="{$search['createTime']}" placeholder="账变时间">
+                                    </div>
+ 	 								<div class="am-form-group am-input-group-sm tpl-form-border-form cl-p">
+                                    <select data-am-selected  name="tradeType" class="am-form-field">
+                                        	<option value="0">账变类型</option>
+  											<option {if $search.tradeType eq 1}selected{/if} value="1">充值</option>
+  											<option {if $search.tradeType eq 2}selected{/if} value="2">提现申请</option>
+  											<option {if $search.tradeType eq 3}selected{/if} value="3">提现拒绝</option>
+  											<option {if $search.tradeType eq 4}selected{/if} value="4">发红包</option>
+  											<option {if $search.tradeType eq 5}selected{/if} value="5">收红包</option>
+  											<option {if $search.tradeType eq 6}selected{/if} value="6">红包退回</option>
+  											<option {if $search.tradeType eq 7}selected{/if} value="7">发转账</option>
+  											<option {if $search.tradeType eq 8}selected{/if} value="8">收转账</option>
+  											<option {if $search.tradeType eq 9}selected{/if} value="9">转账退回</option>
+  											<option {if $search.tradeType eq 10}selected{/if} value="10">用户列表充值</option>
+  											<option {if $search.tradeType eq 11}selected{/if} value="11">用户列表扣款</option>
+										</select>
+								    </div>
+								    <div class="am-form-group am-input-group-sm tpl-form-border-form cl-p">
+                                    <select data-am-selected  name="transIo" class="am-form-field">
+  											<option value="0">交易形式</option>
+  											<option {if $search.transIo eq 1}selected{/if} value="1">收入</option>
+  											<option {if $search.transIo eq -1}selected{/if} value="-1">支出</option>
+										</select>
+								    </div>
+ 	 								<div class="am-form-group am-input-group-sm tpl-form-border-form cl-p">
+                                        <input type="text" class="am-form-field "  name="name" value="{$search['name']}" placeholder="用户名">
+                                    </div>
+ 	 								<div class="am-form-group am-input-group-sm tpl-form-border-form cl-p">
+                                        <button class="am-btn  am-btn-default am-btn-success tpl-table-list-field am-icon-search" type="submit"></button>
+                                    </div>
+                                </form>
+                                </div>
+	<!-- 交易时间、交易方式（红包/转账/付款）、交易形式（支出/收入）交易状态、余额 -->
+                                <div class="am-u-sm-12">
+                                    <table width="100%" class="am-table am-table-compact am-table-striped tpl-table-black " id="example-r">
+                                        <thead>
+                                            <tr>
+                                                <th>用户ID</th>
+                                                <th>用户名</th>
+                                                <th>姓名</th>
+                                                <th>交易金额</th>
+                                                <th>账变类型</th>
+                                                <th>交易形式</th>
+                                                <th>实时余额</th>
+                                                <th>账变时间</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        {volist name="data" id="d"}
+                                            <tr class="gradeX">
+                                                <td>{$d.userId}</td>
+                                                <td>{$d.name}</td>
+                                                <td>{$d.realName}</td>
+                                                <td>{$d.amount}</td>
+                                                <td>{$d.tradeType}</td>
+                                                <td>{$d.transIo}</td>
+                                                <td>{$d.money}</td>
+                                                <td>{$d.createTime}</td>
+                                            </tr>
+                                        {/volist}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="am-u-lg-12 am-cf"><div class="am-fr">{$data->render()}</div></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript">
+    </script>
+    {include file="Widget/footer" /} 
