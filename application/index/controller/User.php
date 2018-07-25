@@ -126,18 +126,8 @@ class User extends Common
             if($res!==false){
                 if($post_data['type']==0){
                     db('wallet')->where($where)->setInc('money',$post_data['money']);
-                    //加钱 并记录账变
-                    $sql = "INSERT INTO im_money_change(`userId`,`name`,`realName`,`sourceId`,`money`,`amount`,`tradeType`,`createTime`,`transIo`) 
-  SELECT {$id},`name`,`realName`,{$res},money,{$post_data['money']},10,NOW(),'1' FROM im_user AS u INNER JOIN im_wallet AS w ON u.id = w.userId WHERE u.id = {$id}";
-                    // echo $sql;exit;
-                    Db::execute($sql);
-                    
                 }else{
                     db('wallet')->where($where)->setDec('money',$post_data['money']);
-                    //减钱 并记录账变
-                    $sql = "INSERT INTO im_money_change(`userId`,`name`,`realName`,`sourceId`,`money`,`amount`,`tradeType`,`createTime`,`transIo`) 
-  SELECT {$id},`name`,`realName`,{$res},money,{$post_data['money']},11,NOW(),'-1' FROM im_user AS u INNER JOIN im_wallet AS w ON u.id = w.userId WHERE u.id = {$id}";
-                    Db::execute($sql);
                 } 
                 $this->success('操作成功,账户金额'.(($post_data['type']==0?1:-1)*$post_data['money']));
             }else{
