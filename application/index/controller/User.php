@@ -606,5 +606,32 @@ class User extends Common
         }
     }
 
+    /**
+     * [programTransfer 小程序转账]
+     * @Author   nomius
+     * @DateTime 2018-07-25
+     * @return   [type]     [description]
+     */
+    public function programTransfer(){
+        $where = array();
+        $pageParam    = ['query' =>[]];
+        $ser['program_id']=input('program_id','');
+        $ser['user_id']=input('user_id','');
+        
+        if($ser['program_id']){
+            $where['program_id'] = $ser['program_id'];
+            $pageParam['query']['program_id'] = $ser['program_id'];
+        }
+
+        if($ser['user_id']){
+            $where['user_id'] = $ser['user_id'];
+            $pageParam['query']['user_id'] = $ser['user_id'];
+        }
+        $data=db('programTransfer')->where($where)->paginate(15, false, $pageParam);
+        
+        $this->assign('ser',$ser);
+        $this->assign('data',$data);
+        return view();
+    }
 
 }

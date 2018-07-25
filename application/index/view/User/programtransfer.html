@@ -1,0 +1,82 @@
+    {include file="Widget/header" /} 
+        <!-- 侧边导航栏 -->
+        {:widget('Widget/menu')}
+        <!-- 内容区域 -->
+        <div class="tpl-content-wrapper">
+            <div class="row-content am-cf">
+                <div class="row">
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                        <div class="widget am-cf">
+                            <div class="widget-head am-cf">
+                                <div class="widget-title  am-cf">小程序转账记录</div>
+                            </div>
+                            <div class="widget-body  am-fr">
+                                <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                                <form action="" class="am-form am-form-inline" role="form" method="post">
+                                    <div class="am-form-group am-input-group-sm tpl-form-border-form cl-p">
+                                        <input type="text" name="program_id" value="{$ser['program_id']}" class="am-form-field" placeholder="小程序ID">
+                                    </div>
+                                    <div class="am-form-group am-input-group-sm tpl-form-border-form cl-p">
+                                        <input type="text" name="user_id" value="{$ser['user_id']}" class="am-form-field" placeholder="用户ID">
+                                    </div>
+                                    <div class="am-form-group">
+                                        <button type="submit" class="am-btn  am-btn-default am-btn-success tpl-table-list-field am-icon-search"></button>
+                                    </div>
+                                </form>
+                                </div>
+
+                                <div class="am-u-sm-12">
+                                    <table width="100%" class="am-table am-table-compact am-table-striped tpl-table-black " id="example-r">
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>平台ID</th>
+                                                <th>小程序ID</th>
+                                                <th>用户ID</th>
+                                                <th>转到小程序的用户名</th>
+                                                <th>金额</th>
+                                                <th>手续费</th>
+                                                <th>类型</th>
+                                                <th>系统订单号</th>
+                                                <th>状态</th>
+                                                <th>提交时间</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        {volist name="data" id="d"}
+                                            <tr class="gradeX" >
+                                                <td>{$d.id}</td>
+                                                <td>{$d.platform_id}</td>
+                                                <td>{$d.program_id}</td>
+                                                <td>{$d.user_id}</td>
+                                                <td>{$d.to_user_name}</td>
+                                                <td>{$d.amount}</td>
+                                                <td>{$d.fee}</td>
+                                                <td>
+                                                    {if $d.transfer_type eq '1'}转入到小程序{else}从小程序转出到坚果{/if}
+                                                </td>
+                                                <td>{$d.transcation_id}</td>
+                                                <td>
+                                                    {if $d.status eq '0'}已提交{elseif $d.status eq '1'}成功{else}失败{/if}
+                                                </td>
+                                                <td>{$d.transcation_time}</td>
+                                            </tr>
+                                        {/volist}
+                                            <!-- more data -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="am-u-lg-12 am-cf">
+                                    <div class="am-fr">
+                                    	{$data->render()}
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+{include file="Widget/footer" /} 
