@@ -143,6 +143,8 @@ function walletType($moneyType){
         case 9:$str='<span>帐号购买</span>';break;
         case 10:$str='<span>AA收款</span>';break;
         case 11:$str='<span>AA付款</span>';break;
+		case 15:$str='<span>用户列表扣款</span>';break;
+		case 16:$str='<span>提现拒绝</span>';break;
         default:$str='<span>未知类型</span>';
     }
     return $str;

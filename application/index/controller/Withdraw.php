@@ -78,6 +78,13 @@ class Withdraw extends Common
         $r=db('UserWithdraw')->where("id",$id)->setField("optid",$admin_id);
             $sql = "UPDATE im_wallet AS w INNER JOIN  im_user_withdraw as uw ON w.userId = uw.userId SET w.money = w.money + uw.amount WHERE uw.id = $id";
                 Db::execute($sql);
+
+            //插入资金变动
+            $now = time().'000';
+            $sql = "INSERT INTO im_wallet_history (`content`,`moneyType`,`amount`,`userId`,`formType`,`moneyDirect`,`destId`,`occurTime`)
+                    SELECT '提现拒绝',16,amount,userId,0,1,userId,{$now} FROM im_user_withdraw WHERE id IN ({$id})";
+            Db::execute($sql);
+
         }else{
             //进行提款
             $ret = $this->payMoney($id);
@@ -294,6 +301,13 @@ class Withdraw extends Common
                 $ids_str = join(',',$ids);
                 $sql = "UPDATE im_wallet AS w INNER JOIN  im_user_withdraw as uw ON w.userId = uw.userId SET w.money = w.money + uw.amount WHERE uw.id IN ($ids_str)";
                 Db::execute($sql);
+
+                //插入资金变动
+                $now = time().'000';
+                $sql = "INSERT INTO im_wallet_history (`content`,`moneyType`,`amount`,`userId`,`formType`,`moneyDirect`,`destId`,`occurTime`)
+                        SELECT '提现拒绝',16,amount,userId,0,1,userId,{$now} FROM im_user_withdraw WHERE id IN ({$ids_str})";
+                Db::execute($sql);
+                
                 // 提交事务    
                 Db::commit();    
                 } catch (\Exception $e) {
