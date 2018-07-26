@@ -78,12 +78,6 @@ class Withdraw extends Common
         $r=db('UserWithdraw')->where("id",$id)->setField("optid",$admin_id);
             $sql = "UPDATE im_wallet AS w INNER JOIN  im_user_withdraw as uw ON w.userId = uw.userId SET w.money = w.money + uw.amount WHERE uw.id = $id";
                 Db::execute($sql);
-                //插入账变
-                $sql = "INSERT INTO im_money_change(`userId`,`name`,`realName`,`sourceId`,`money`,`amount`,`tradeType`,`createTime`,`transIo`) 
-  SELECT uw.userId,u.name,u.realName,uw.id,w.money,uw.amount,3,NOW(),'1' 
-FROM im_user_withdraw AS uw INNER JOIN im_user AS u ON uw.userId = u.id 
-INNER JOIN im_wallet AS w ON uw.userId = w.userId WHERE uw.id IN ($id)";
-                 Db::execute($sql);
         }else{
             //进行提款
             $ret = $this->payMoney($id);
@@ -300,15 +294,6 @@ INNER JOIN im_wallet AS w ON uw.userId = w.userId WHERE uw.id IN ($id)";
                 $ids_str = join(',',$ids);
                 $sql = "UPDATE im_wallet AS w INNER JOIN  im_user_withdraw as uw ON w.userId = uw.userId SET w.money = w.money + uw.amount WHERE uw.id IN ($ids_str)";
                 Db::execute($sql);
-
-                                //插入账变
-                $sql = "INSERT INTO im_money_change(`userId`,`name`,`realName`,`sourceId`,`money`,`amount`,`tradeType`,`createTime`,`transIo`) 
-  SELECT uw.userId,u.name,u.realName,uw.id,w.money,uw.amount,3,NOW(),'1' 
-FROM im_user_withdraw AS uw INNER JOIN im_user AS u ON uw.userId = u.id 
-INNER JOIN im_wallet AS w ON uw.userId = w.userId WHERE uw.id IN ($ids_str)";
-                 Db::execute($sql);
-
-
                 // 提交事务    
                 Db::commit();    
                 } catch (\Exception $e) {
